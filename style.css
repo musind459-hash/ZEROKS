@@ -22,8 +22,8 @@ body {
 }
 
 .wrapper {
-    width: 90%;
-    max-width: 900px;
+    width: 95%;
+    max-width: 1200px; /* Увеличил ширину под 3 карточки */
     text-align: center;
     display: flex;
     flex-direction: column;
@@ -33,7 +33,7 @@ body {
 header { margin-bottom: 30px; }
 
 .logo {
-    font-size: clamp(2.5rem, 8vw, 4rem);
+    font-size: clamp(2rem, 6vw, 4rem);
     font-weight: 900;
     letter-spacing: 12px;
     text-transform: uppercase;
@@ -53,13 +53,12 @@ header { margin-bottom: 30px; }
     border: 1px solid var(--border);
     padding: 8px 25px;
     display: inline-block;
-    background: rgba(255, 255, 255, 0.02);
 }
 
 .software-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-    gap: 25px;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
     width: 100%;
     margin-top: 40px;
 }
@@ -69,7 +68,7 @@ header { margin-bottom: 30px; }
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
     border: 1px solid var(--border);
-    padding: 45px 30px;
+    padding: 40px 25px;
     border-radius: 4px;
     transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     display: flex;
@@ -84,23 +83,23 @@ header { margin-bottom: 30px; }
 }
 
 .card h2 {
-    font-size: 1.4rem;
+    font-size: 1.2rem;
     color: var(--cyan);
     margin-bottom: 15px;
     letter-spacing: 2px;
 }
 
 .card p {
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     color: var(--dim);
     line-height: 1.5;
-    margin-bottom: 35px;
-    min-height: 60px;
+    margin-bottom: 30px;
+    min-height: 50px;
 }
 
 .btn {
     width: 100%;
-    padding: 16px;
+    padding: 14px;
     background: transparent;
     border: 1px solid var(--cyan);
     color: var(--cyan);
@@ -109,7 +108,7 @@ header { margin-bottom: 30px; }
     text-transform: uppercase;
     letter-spacing: 3px;
     transition: 0.3s;
-    font-size: 0.85rem;
+    font-size: 0.8rem;
 }
 
 .btn:hover {
@@ -120,25 +119,18 @@ header { margin-bottom: 30px; }
 
 .discord-box {
     margin-top: 60px;
-    padding: 20px 40px;
+    padding: 15px 30px;
     border: 1px dashed var(--border);
     background: rgba(0, 242, 255, 0.02);
     display: inline-flex;
     align-items: center;
     gap: 15px;
-    transition: 0.3s;
 }
 
-.discord-box:hover {
-    border-style: solid;
-    border-color: var(--cyan);
-}
-
-.ds-label { color: var(--dim); font-size: 0.75rem; letter-spacing: 2px; }
-.ds-user { color: var(--text); font-weight: bold; letter-spacing: 1px; font-size: 1.1rem; }
+.ds-user { color: var(--text); font-weight: bold; font-size: 1rem; }
 
 footer {
-    margin-top: 60px;
+    margin-top: 50px;
     color: #222;
     font-size: 0.7rem;
     letter-spacing: 3px;
@@ -147,12 +139,11 @@ footer {
 
 .v-line {
     width: 1px;
-    height: 60px;
+    height: 50px;
     background: linear-gradient(transparent, var(--border), transparent);
-    margin: 20px 0;
+    margin: 15px 0;
 }
 
 @media (max-width: 600px) {
-    .logo { font-size: 2rem; letter-spacing: 5px; }
-    .software-grid { grid-template-columns: 1fr; }
+    .logo { font-size: 1.8rem; letter-spacing: 5px; }
 }
