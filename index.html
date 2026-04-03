@@ -3,56 +3,175 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ZEROKS HUB | By FortDen</title>
-    <link rel="stylesheet" href="style.css">
+    <title>ZEROKS | Hub</title>
+    <style>
+        /* ПАЛИТРА - ГЛУБОКИЙ ТЕМНЫЙ */
+        :root {
+            --bg: #020202;
+            --cyan: #00cbd6; 
+            --cyan-dim: rgba(0, 203, 214, 0.15);
+            --border: rgba(255, 255, 255, 0.03);
+            --glass: rgba(12, 12, 12, 0.98);
+            --text: #e0e0e0;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Consolas', monospace; }
+
+        body {
+            background-color: var(--bg);
+            background-image: radial-gradient(circle at 50% 50%, #080f11 0%, #020202 100%);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px;
+        }
+
+        .wrapper {
+            width: 100%;
+            max-width: 1100px; /* Увеличено для ряда из 3-х колонок */
+            text-align: center;
+        }
+
+        /* ЛОГОТИП */
+        header { margin-bottom: 50px; }
+        .logo {
+            font-size: 3rem;
+            font-weight: 900;
+            letter-spacing: 20px;
+            text-transform: uppercase;
+            text-shadow: 0 0 10px var(--cyan-dim);
+        }
+        .logo span { color: var(--cyan); }
+        .tag { font-size: 0.7rem; color: #444; letter-spacing: 6px; margin-top: 10px; }
+
+        /* ГЛАВНЫЙ ЛАУНЧЕР */
+        .hub-block {
+            background: var(--glass);
+            border: 1px solid var(--cyan-dim);
+            padding: 50px;
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .status {
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            border: 1px solid var(--cyan-dim);
+            background: var(--bg);
+            color: var(--cyan);
+            padding: 2px 15px;
+            font-size: 0.65rem;
+            letter-spacing: 2px;
+        }
+
+        h2 { font-size: 1.8rem; margin-bottom: 15px; letter-spacing: 4px; }
+        p { color: #777; font-size: 0.9rem; margin-bottom: 30px; line-height: 1.6; max-width: 600px; margin: 0 auto 30px; }
+
+        /* СЕТКА ПРОГРАММ - ВСЕ В РЯД */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr); /* Ровно 3 колонки */
+            gap: 15px;
+        }
+
+        .card {
+            background: var(--glass);
+            border: 1px solid var(--border);
+            padding: 35px 20px;
+            transition: 0.3s ease;
+        }
+
+        .card:hover {
+            border-color: var(--cyan-dim);
+            background: rgba(255, 255, 255, 0.01);
+            transform: translateY(-5px);
+        }
+
+        .card h3 { font-size: 0.9rem; margin-bottom: 20px; letter-spacing: 2px; color: #bbb; }
+
+        /* КНОПКИ */
+        .btn {
+            text-decoration: none;
+            color: var(--cyan);
+            border: 1px solid var(--cyan-dim);
+            padding: 12px;
+            font-size: 0.75rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            transition: 0.2s;
+            display: block;
+            width: 100%;
+        }
+
+        .main-btn {
+            display: inline-block;
+            width: auto;
+            min-width: 280px;
+            padding: 18px 40px;
+            background: rgba(0, 203, 214, 0.03);
+        }
+
+        .btn:hover {
+            background: var(--cyan);
+            color: #000;
+            box-shadow: 0 0 15px var(--cyan-dim);
+        }
+
+        /* КОНТАКТЫ */
+        .contact {
+            margin-top: 60px;
+            font-size: 0.7rem;
+            color: #333;
+            letter-spacing: 4px;
+        }
+        .contact span { color: var(--cyan); font-weight: bold; }
+
+        /* АДАПТИВНОСТЬ ДЛЯ МОБИЛОК */
+        @media (max-width: 900px) {
+            .grid { grid-template-columns: 1fr; } /* На телефонах всё же в столбик для удобства */
+            .logo { font-size: 2rem; letter-spacing: 10px; }
+        }
+    </style>
 </head>
 <body>
 
     <div class="wrapper">
         <header>
             <div class="logo">ZERO<span>KS</span></div>
-            <div class="author-tag">Original by FortDen</div>
+            <div class="tag">BY FORTDEN</div>
         </header>
 
-        <div class="v-line"></div>
+        <section class="hub-block">
+            <div class="status">CENTRAL_CORE</div>
+            <h2>ZEROKS_HUB</h2>
+            <p>Единый лаунчер для управления экосистемой. Мониторинг разработки и автоматическая загрузка новых версий.</p>
+            <a href="https://download1335.mediafire.com/vz331sa9olyg6QO9eDbKYldnPW0JFV_KXZjaxLzgdXvUAo-YkVkvUbTgGy_WSO2ytENurF9woYIVNPMXzF_YMZ2LgyDw0FqZMOm1u1kB3Zv5SpnQar68BYJedBy4dyFO4cDZmdEKqX6zmRDq_AG4HDdj_DZe2GME4v9aIZHbpTN8HRI/b0u1azfx3343869/ZEROKS_HUB.exe" class="btn main-btn">DOWNLOAD LAUNCHER</a>
+        </section>
 
-        <div class="software-grid">
+        <div class="grid">
             <div class="card">
-                <h2>STORM_TERMINAL</h2>
-                <p>
-                    Системная консоль и файловый менеджер. <br>
-                    Оптимизированный код и полный контроль.
-                </p>
-                <a href="https://download1592.mediafire.com/o5s43nv1j9dgTlFciV-D5jiRlcdyUKs22kblaPv0lnrBN0Wva2PrdPPr_n3OnYwvnmbNZ1omJESGyJHqnj9jPpD3zORXazT3qZyDHA__ErIv3756beul7RAgYy8m7MpJkBhzZWWw5moGAQ42wVT0U_F2G7ZWh1uOmvozzKUJczWuB1w/k5cdd4ct1cdiwn1/ZEROKS_STORM.exe" class="btn">DOWNLOAD STORM</a>
+                <h3>STORM_TERMINAL</h3>
+                <a href="https://download1592.mediafire.com/o5s43nv1j9dgTlFciV-D5jiRlcdyUKs22kblaPv0lnrBN0Wva2PrdPPr_n3OnYwvnmbNZ1omJESGyJHqnj9jPpD3zORXazT3qZyDHA__ErIv3756beul7RAgYy8m7MpJkBhzZWWw5moGAQ42wVT0U_F2G7ZWh1uOmvozzKUJczWuB1w/k5cdd4ct1cdiwn1/ZEROKS_STORM.exe" class="btn">GET BINARY</a>
             </div>
 
             <div class="card">
-                <h2>NETSCOPE_CORE</h2>
-                <p>
-                    Сетевой движок для анализа трафика. <br>
-                    Базовый модуль экосистемы софта.
-                </p>
-                <a href="https://download937.mediafire.com/fx4b2q4kybcg1lrJSuTAQebx5fvlU9SUYDpPY_XfZYhgi-jrtZVDG3wA3TR2JLX2Qbb3rpRTFMjA990ZGx3_nyqF7bFKn0e4v6H9fb2fCIjqguuu4_HfjBgBySMIe0WD4J0eJOJhFDHZBsliukh_ssTOYKsSd51WCKrM3TZoEd3v4H0/b1z01vjxvc94fdh/NetScope_ZEROKS.exe" class="btn">DOWNLOAD NETSCOPE</a>
+                <h3>NETSCOPE_CORE</h3>
+                <a href="https://download937.mediafire.com/fx4b2q4kybcg1lrJSuTAQebx5fvlU9SUYDpPY_XfZYhgi-jrtZVDG3wA3TR2JLX2Qbb3rpRTFMjA990ZGx3_nyqF7bFKn0e4v6H9fb2fCIjqguuu4_HfjBgBySMIe0WD4J0eJOJhFDHZBsliukh_ssTOYKsSd51WCKrM3TZoEd3v4H0/b1z01vjxvc94fdh/NetScope_ZEROKS.exe" class="btn">GET BINARY</a>
             </div>
 
             <div class="card">
-                <h2>ZEROKS_GIFTER</h2>
-                <p>
-                    Fun-приложение для рабочего стола. <br>
-                    Бегающие картинки (3 встроенных пресета).
-                </p>
-                <a href="https://download1529.mediafire.com/6fh7bl9d08hgViarb0Ls8A1tqEGjltc5gOQBS2p7SvRHR9N0URhfQS5TvvKeIuM8g-YfDvyFiXD3HPSG62FUYyFZIm2SJ3XYXGwNWU72ne1Y5uXdy3Olj9StbS7AkbefgNk4yKuqY4G9w7aVnlZLScoFUN2FgZgabwr7ryrei46s3Q/qz1yn1kbsfycde7/Zeroks_gifter.exe" class="btn">DOWNLOAD GIFTER</a>
+                <h3>ZEROKS_GIFTER</h3>
+                <a href="https://download1529.mediafire.com/6fh7bl9d08hgViarb0Ls8A1tqEGjltc5gOQBS2p7SvRHR9N0URhfQS5TvvKeIuM8g-YfDvyFiXD3HPSG62FUYyFZIm2SJ3XYXGwNWU72ne1Y5uXdy3Olj9StbS7AkbefgNk4yKuqY4G9w7aVnlZLScoFUN2FgZgabwr7ryrei46s3Q/qz1yn1kbsfycde7/Zeroks_gifter.exe" class="btn">GET BINARY</a>
             </div>
         </div>
 
-        <div class="discord-box">
-            <span class="ds-label">DISCORD:</span>
-            <span class="ds-user">mrmden</span>
+        <div class="contact">
+            DISCORD: <span>mrmden</span>
         </div>
-
-        <footer>
-            EST. 2026 | FORTDEN PROJECTS
-        </footer>
     </div>
 
 </body>
