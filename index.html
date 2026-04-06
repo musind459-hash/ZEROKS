@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ZEROKS | Hub</title>
     <style>
-        /* ПАЛИТРА - ГЛУБОКИЙ ТЕМНЫЙ */
         :root {
             --bg: #020202;
             --cyan: #00cbd6; 
@@ -13,6 +12,7 @@
             --border: rgba(255, 255, 255, 0.03);
             --glass: rgba(12, 12, 12, 0.98);
             --text: #e0e0e0;
+            --text-dim: #777;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Consolas', monospace; }
@@ -25,16 +25,15 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 40px;
+            padding: 40px 20px;
         }
 
         .wrapper {
             width: 100%;
-            max-width: 1100px; /* Увеличено для ряда из 3-х колонок */
+            max-width: 1300px;
             text-align: center;
         }
 
-        /* ЛОГОТИП */
         header { margin-bottom: 50px; }
         .logo {
             font-size: 3rem;
@@ -50,7 +49,7 @@
         .hub-block {
             background: var(--glass);
             border: 1px solid var(--cyan-dim);
-            padding: 50px;
+            padding: 50px 30px;
             margin-bottom: 20px;
             position: relative;
         }
@@ -69,20 +68,24 @@
         }
 
         h2 { font-size: 1.8rem; margin-bottom: 15px; letter-spacing: 4px; }
-        p { color: #777; font-size: 0.9rem; margin-bottom: 30px; line-height: 1.6; max-width: 600px; margin: 0 auto 30px; }
+        .hub-p { color: var(--text-dim); font-size: 0.9rem; margin-bottom: 30px; line-height: 1.6; max-width: 600px; margin: 0 auto 30px; }
 
-        /* СЕТКА ПРОГРАММ - ВСЕ В РЯД */
+        /* СЕТКА ПРОГРАММ - 4 В РЯД */
         .grid {
             display: grid;
-            grid-template-columns: repeat(3, 1fr); /* Ровно 3 колонки */
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
             gap: 15px;
         }
 
         .card {
             background: var(--glass);
             border: 1px solid var(--border);
-            padding: 35px 20px;
+            padding: 30px 20px;
             transition: 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 220px;
         }
 
         .card:hover {
@@ -91,7 +94,8 @@
             transform: translateY(-5px);
         }
 
-        .card h3 { font-size: 0.9rem; margin-bottom: 20px; letter-spacing: 2px; color: #bbb; }
+        .card h3 { font-size: 0.9rem; margin-bottom: 12px; letter-spacing: 2px; color: #fff; }
+        .card p { font-size: 0.8rem; color: var(--text-dim); line-height: 1.5; margin-bottom: 25px; }
 
         /* КНОПКИ */
         .btn {
@@ -105,6 +109,7 @@
             transition: 0.2s;
             display: block;
             width: 100%;
+            text-align: center;
         }
 
         .main-btn {
@@ -130,10 +135,9 @@
         }
         .contact span { color: var(--cyan); font-weight: bold; }
 
-        /* АДАПТИВНОСТЬ ДЛЯ МОБИЛОК */
-        @media (max-width: 900px) {
-            .grid { grid-template-columns: 1fr; } /* На телефонах всё же в столбик для удобства */
+        @media (max-width: 800px) {
             .logo { font-size: 2rem; letter-spacing: 10px; }
+            .grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -148,23 +152,32 @@
         <section class="hub-block">
             <div class="status">CENTRAL_CORE</div>
             <h2>ZEROKS_HUB</h2>
-            <p>Единый лаунчер для управления экосистемой. Мониторинг разработки и автоматическая загрузка новых версий.</p>
+            <p class="hub-p">Мастер-лаунчер для управления всей экосистемой программ. Мониторинг разработки и автоматическая загрузка обновлений.</p>
             <a href="https://download1335.mediafire.com/vz331sa9olyg6QO9eDbKYldnPW0JFV_KXZjaxLzgdXvUAo-YkVkvUbTgGy_WSO2ytENurF9woYIVNPMXzF_YMZ2LgyDw0FqZMOm1u1kB3Zv5SpnQar68BYJedBy4dyFO4cDZmdEKqX6zmRDq_AG4HDdj_DZe2GME4v9aIZHbpTN8HRI/b0u1azfx3343869/ZEROKS_HUB.exe" class="btn main-btn">DOWNLOAD LAUNCHER</a>
         </section>
 
         <div class="grid">
             <div class="card">
                 <h3>STORM_TERMINAL</h3>
+                <p>Усовершенствованная системная консоль с файловым менеджером.</p>
                 <a href="https://download1592.mediafire.com/o5s43nv1j9dgTlFciV-D5jiRlcdyUKs22kblaPv0lnrBN0Wva2PrdPPr_n3OnYwvnmbNZ1omJESGyJHqnj9jPpD3zORXazT3qZyDHA__ErIv3756beul7RAgYy8m7MpJkBhzZWWw5moGAQ42wVT0U_F2G7ZWh1uOmvozzKUJczWuB1w/k5cdd4ct1cdiwn1/ZEROKS_STORM.exe" class="btn">GET BINARY</a>
             </div>
 
             <div class="card">
                 <h3>NETSCOPE_CORE</h3>
+                <p>Модуль для мониторинга сетевой активности и анализа соединений.</p>
                 <a href="https://download937.mediafire.com/fx4b2q4kybcg1lrJSuTAQebx5fvlU9SUYDpPY_XfZYhgi-jrtZVDG3wA3TR2JLX2Qbb3rpRTFMjA990ZGx3_nyqF7bFKn0e4v6H9fb2fCIjqguuu4_HfjBgBySMIe0WD4J0eJOJhFDHZBsliukh_ssTOYKsSd51WCKrM3TZoEd3v4H0/b1z01vjxvc94fdh/NetScope_ZEROKS.exe" class="btn">GET BINARY</a>
             </div>
 
             <div class="card">
+                <h3>PHOTO_CONVERTER</h3>
+                <p>Быстрое преобразование изображений в любые форматы (PNG, JPG, WebP и др.).</p>
+                <a href="https://www.mediafire.com/file/9edc8j1t1c9vtue/converter.exe/file" class="btn">GET BINARY</a>
+            </div>
+
+            <div class="card">
                 <h3>ZEROKS_GIFTER</h3>
+                <p>Развлекательное приложение с анимациями на рабочем столе.</p>
                 <a href="https://download1529.mediafire.com/6fh7bl9d08hgViarb0Ls8A1tqEGjltc5gOQBS2p7SvRHR9N0URhfQS5TvvKeIuM8g-YfDvyFiXD3HPSG62FUYyFZIm2SJ3XYXGwNWU72ne1Y5uXdy3Olj9StbS7AkbefgNk4yKuqY4G9w7aVnlZLScoFUN2FgZgabwr7ryrei46s3Q/qz1yn1kbsfycde7/Zeroks_gifter.exe" class="btn">GET BINARY</a>
             </div>
         </div>
