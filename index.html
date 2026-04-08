@@ -30,7 +30,7 @@
 
         .wrapper {
             width: 100%;
-            max-width: 1300px;
+            max-width: 1400px;
             text-align: center;
         }
 
@@ -45,7 +45,6 @@
         .logo span { color: var(--cyan); }
         .tag { font-size: 0.7rem; color: #444; letter-spacing: 6px; margin-top: 10px; }
 
-        /* ГЛАВНЫЙ ЛАУНЧЕР */
         .hub-block {
             background: var(--glass);
             border: 1px solid var(--cyan-dim);
@@ -70,10 +69,10 @@
         h2 { font-size: 1.8rem; margin-bottom: 15px; letter-spacing: 4px; }
         .hub-p { color: var(--text-dim); font-size: 0.9rem; margin-bottom: 30px; line-height: 1.6; max-width: 600px; margin: 0 auto 30px; }
 
-        /* СЕТКА ПРОГРАММ - 4 В РЯД */
+        /* ОБНОВЛЕННАЯ СЕТКА ДЛЯ 5 ЭЛЕМЕНТОВ */
         .grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
             gap: 15px;
         }
 
@@ -85,7 +84,7 @@
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            min-height: 220px;
+            min-height: 240px;
         }
 
         .card:hover {
@@ -94,10 +93,9 @@
             transform: translateY(-5px);
         }
 
-        .card h3 { font-size: 0.9rem; margin-bottom: 12px; letter-spacing: 2px; color: #fff; }
-        .card p { font-size: 0.8rem; color: var(--text-dim); line-height: 1.5; margin-bottom: 25px; }
+        .card h3 { font-size: 0.85rem; margin-bottom: 12px; letter-spacing: 2px; color: #fff; }
+        .card p { font-size: 0.75rem; color: var(--text-dim); line-height: 1.5; margin-bottom: 25px; }
 
-        /* КНОПКИ */
         .btn {
             text-decoration: none;
             color: var(--cyan);
@@ -126,7 +124,6 @@
             box-shadow: 0 0 15px var(--cyan-dim);
         }
 
-        /* КОНТАКТЫ */
         .contact {
             margin-top: 60px;
             font-size: 0.7rem;
@@ -135,9 +132,9 @@
         }
         .contact span { color: var(--cyan); font-weight: bold; }
 
-        @media (max-width: 800px) {
+        @media (max-width: 1000px) {
             .logo { font-size: 2rem; letter-spacing: 10px; }
-            .grid { grid-template-columns: 1fr; }
+            .grid { grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
         }
     </style>
 </head>
@@ -159,25 +156,31 @@
         <div class="grid">
             <div class="card">
                 <h3>STORM_TERMINAL</h3>
-                <p>Усовершенствованная системная консоль с файловым менеджером.</p>
+                <p>Системная консоль с интегрированным файловым менеджером.</p>
                 <a href="https://download1592.mediafire.com/o5s43nv1j9dgTlFciV-D5jiRlcdyUKs22kblaPv0lnrBN0Wva2PrdPPr_n3OnYwvnmbNZ1omJESGyJHqnj9jPpD3zORXazT3qZyDHA__ErIv3756beul7RAgYy8m7MpJkBhzZWWw5moGAQ42wVT0U_F2G7ZWh1uOmvozzKUJczWuB1w/k5cdd4ct1cdiwn1/ZEROKS_STORM.exe" class="btn">GET BINARY</a>
             </div>
 
             <div class="card">
                 <h3>NETSCOPE_CORE</h3>
-                <p>Модуль для мониторинга сетевой активности и анализа соединений.</p>
+                <p>Анализ сетевой активности и мониторинг подключений.</p>
                 <a href="https://download937.mediafire.com/fx4b2q4kybcg1lrJSuTAQebx5fvlU9SUYDpPY_XfZYhgi-jrtZVDG3wA3TR2JLX2Qbb3rpRTFMjA990ZGx3_nyqF7bFKn0e4v6H9fb2fCIjqguuu4_HfjBgBySMIe0WD4J0eJOJhFDHZBsliukh_ssTOYKsSd51WCKrM3TZoEd3v4H0/b1z01vjxvc94fdh/NetScope_ZEROKS.exe" class="btn">GET BINARY</a>
             </div>
 
             <div class="card">
+                <h3>ZEROKS_ATTENTION</h3>
+                <p>Инструмент для привлечения внимания через проекторы и мониторы (5 пресетов).</p>
+                <a href="https://www.mediafire.com/file/jz6xkpuoa49xsde/ZEROKS_ATTENTION.exe/file" class="btn">GET BINARY</a>
+            </div>
+
+            <div class="card">
                 <h3>PHOTO_CONVERTER</h3>
-                <p>Быстрое преобразование изображений в любые форматы (PNG, JPG, WebP и др.).</p>
+                <p>Быстрая смена форматов изображений (PNG, JPG, WebP и др.).</p>
                 <a href="https://www.mediafire.com/file/9edc8j1t1c9vtue/converter.exe/file" class="btn">GET BINARY</a>
             </div>
 
             <div class="card">
                 <h3>ZEROKS_GIFTER</h3>
-                <p>Развлекательное приложение с анимациями на рабочем столе.</p>
+                <p>Развлекательный модуль с анимациями на рабочем столе.</p>
                 <a href="https://download1529.mediafire.com/6fh7bl9d08hgViarb0Ls8A1tqEGjltc5gOQBS2p7SvRHR9N0URhfQS5TvvKeIuM8g-YfDvyFiXD3HPSG62FUYyFZIm2SJ3XYXGwNWU72ne1Y5uXdy3Olj9StbS7AkbefgNk4yKuqY4G9w7aVnlZLScoFUN2FgZgabwr7ryrei46s3Q/qz1yn1kbsfycde7/Zeroks_gifter.exe" class="btn">GET BINARY</a>
             </div>
         </div>
