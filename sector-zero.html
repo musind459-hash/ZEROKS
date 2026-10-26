@@ -1,0 +1,1187 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SECTOR-Zero — ZEROKS by FortDen</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-deep: #020306;
+      --liquid-bg: linear-gradient(135deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.03) 50%, rgba(255,255,255,0.07) 100%);
+      --liquid-border: rgba(255,255,255,0.18);
+      --liquid-shadow: 0 28px 70px rgba(0,0,0,0.75), inset 0 1.5px 1px rgba(255,255,255,0.4), inset 0 -1px 1px rgba(255,255,255,0.08);
+      --text-primary: #f5f5f7;
+      --text-secondary: rgba(235,235,245,0.62);
+      --accent-blue: #007aff;
+      --accent-cyan: #5ac8fa;
+      --accent-green: #30d158;
+      --accent-orange: #ff9f0a;
+      --accent-pink: #ff375f;
+      --accent-purple: #bf5af2;
+      --radius-xl: 32px;
+      --radius-lg: 24px;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; -webkit-font-smoothing: antialiased; scroll-behavior: smooth; user-select: none; }
+    body {
+      background-color: var(--bg-deep);
+      color: var(--text-primary);
+      font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Inter', sans-serif;
+      line-height: 1.5;
+      overflow-x: hidden;
+      padding-bottom: 96px;
+    }
+    .liquid-canvas-bg {
+      position: fixed; inset: 0; z-index: -2; overflow: hidden; pointer-events: none;
+      background: radial-gradient(circle at 50% 0%, #0a1124 0%, #020306 75%);
+    }
+    .fluid-blob {
+      position: absolute; border-radius: 50%; filter: blur(85px); opacity: 0.55;
+      animation: floatBlob 18s infinite alternate ease-in-out; transition: background 0.6s ease;
+    }
+    .blob-1 { width: 520px; height: 520px; background: radial-gradient(circle, #007aff 0%, transparent 70%); top: -10%; left: 12%; }
+    .blob-2 { width: 480px; height: 480px; background: radial-gradient(circle, #ff375f 0%, transparent 70%); top: 28%; right: 8%; animation-delay: -6s; }
+    .blob-3 { width: 550px; height: 550px; background: radial-gradient(circle, #5ac8fa 0%, #bf5af2 60%, transparent 75%); bottom: -12%; left: 28%; animation-delay: -11s; }
+    @keyframes floatBlob {
+      0% { transform: translate(0, 0) scale(1); }
+      50% { transform: translate(60px, -40px) scale(1.12); }
+      100% { transform: translate(-50px, 50px) scale(0.92); }
+    }
+    .container { max-width: 1180px; margin: 0 auto; padding: 0 24px; }
+    .liquid-glass {
+      background: var(--liquid-bg);
+      backdrop-filter: blur(44px) saturate(210%);
+      -webkit-backdrop-filter: blur(44px) saturate(210%);
+      border: 1px solid var(--liquid-border);
+      box-shadow: var(--liquid-shadow);
+      position: relative;
+    }
+    /* iPhone Dynamic Island */
+    .dynamic-island-wrap { position: fixed; top: 12px; left: 50%; transform: translateX(-50%); z-index: 200; }
+    .dynamic-island {
+      background: rgba(8,8,12,0.88); backdrop-filter: blur(28px) saturate(200%);
+      border: 1px solid rgba(255,255,255,0.18);
+      box-shadow: 0 14px 36px rgba(0,0,0,0.75), inset 0 1px 0.5px rgba(255,255,255,0.28);
+      border-radius: 999px; height: 38px; min-width: 260px; padding: 0 16px;
+      display: flex; align-items: center; justify-content: space-between; gap: 14px;
+      transition: all 0.38s cubic-bezier(0.22, 1, 0.36, 1); cursor: pointer;
+    }
+    .dynamic-island.expanded {
+      height: 46px; min-width: 350px; padding: 0 20px;
+      border-color: rgba(90,200,250,0.55);
+      box-shadow: 0 16px 44px rgba(0,122,255,0.3), inset 0 1px 1px rgba(255,255,255,0.4);
+    }
+    .island-left { display: flex; align-items: center; gap: 8px; font-size: 0.76rem; font-weight: 600; white-space: nowrap; }
+    .island-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent-green); box-shadow: 0 0 10px var(--accent-green); }
+    .island-eq { display: flex; align-items: flex-end; gap: 2.5px; height: 14px; }
+    .eq-bar { width: 3px; height: 4px; background: var(--accent-cyan); border-radius: 2px; transition: height 0.08s ease; }
+    /* Header */
+    header {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(4,6,12,0.52); backdrop-filter: blur(32px) saturate(190%);
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+    .nav-bar { height: 62px; display: flex; align-items: center; justify-content: space-between; }
+    .brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text-primary); font-weight: 600; font-size: 0.96rem; }
+    .brand-tag {
+      font-size: 0.7rem; font-weight: 700; letter-spacing: 0.06em; padding: 4px 9px; border-radius: 8px;
+      background: linear-gradient(135deg, rgba(255,255,255,0.22), rgba(255,255,255,0.06));
+      border: 1px solid rgba(255,255,255,0.24); box-shadow: inset 0 1px 0 rgba(255,255,255,0.35);
+    }
+    .author-badge { font-size: 0.78rem; color: var(--text-secondary); padding-left: 8px; border-left: 1px solid rgba(255,255,255,0.12); }
+    .author-badge strong { color: #ffffff; }
+    .nav-right { display: flex; align-items: center; gap: 8px; }
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      font-size: 0.9rem; font-weight: 600; padding: 11px 24px; border-radius: 999px;
+      text-decoration: none; cursor: pointer; transition: all 0.25s cubic-bezier(0.22, 1, 0.36, 1); font-family: inherit;
+    }
+    .btn-sm { font-size: 0.76rem; padding: 7px 14px; }
+    .btn-primary {
+      background: linear-gradient(180deg, #2997ff 0%, #0071e3 100%); color: #ffffff;
+      border: 1px solid rgba(255,255,255,0.32);
+      box-shadow: 0 8px 24px rgba(0,113,227,0.42), inset 0 1px 1px rgba(255,255,255,0.45);
+    }
+    .btn-primary:hover { transform: translateY(-2px) scale(1.02); box-shadow: 0 12px 32px rgba(0,122,255,0.6); }
+    .btn-glass {
+      background: linear-gradient(135deg, rgba(255,255,255,0.14) 0%, rgba(255,255,255,0.04) 100%);
+      backdrop-filter: blur(20px); color: var(--text-primary); border: 1px solid rgba(255,255,255,0.2);
+      box-shadow: inset 0 1px 0.5px rgba(255,255,255,0.35), 0 8px 20px rgba(0,0,0,0.35);
+    }
+    .btn-glass:hover { background: linear-gradient(135deg, rgba(255,255,255,0.22) 0%, rgba(255,255,255,0.08) 100%); border-color: rgba(255,255,255,0.38); }
+    .btn-glass.active-mode { background: linear-gradient(135deg, rgba(90,200,250,0.32), rgba(0,122,255,0.18)); border-color: var(--accent-cyan); color: #fff; }
+    /* Hero */
+    .hero { padding: 68px 0 44px; text-align: center; }
+    .hero-pill {
+      display: inline-flex; align-items: center; gap: 8px; padding: 6px 16px; border-radius: 999px;
+      background: linear-gradient(135deg, rgba(255,255,255,0.14), rgba(255,255,255,0.03));
+      border: 1px solid rgba(255,255,255,0.22); box-shadow: inset 0 1px 0 rgba(255,255,255,0.35);
+      font-size: 0.8rem; font-weight: 500; margin-bottom: 18px;
+    }
+    .hero-pill span { color: var(--accent-cyan); font-weight: 700; }
+    .hero h1 {
+      font-size: clamp(3.1rem, 6.8vw, 5.3rem); font-weight: 800; letter-spacing: -0.04em; line-height: 1.03;
+      background: linear-gradient(180deg, #ffffff 0%, #e0e5f0 55%, #8a94a6 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 16px;
+    }
+    .hero p { font-size: 1.16rem; color: var(--text-secondary); max-width: 660px; margin: 0 auto 28px; }
+    .hero-actions { display: flex; gap: 14px; justify-content: center; align-items: center; flex-wrap: wrap; }
+    /* macOS Window */
+    .mac-window { margin-top: 44px; border-radius: var(--radius-xl); overflow: hidden; text-align: left; }
+    .mac-titlebar {
+      height: 52px; background: linear-gradient(180deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.02) 100%);
+      border-bottom: 1px solid rgba(255,255,255,0.12); display: flex; align-items: center; justify-content: space-between; padding: 0 20px;
+    }
+    .traffic-lights { display: flex; gap: 8px; }
+    .light { width: 12px; height: 12px; border-radius: 50%; box-shadow: inset 0 1px 1px rgba(255,255,255,0.4); }
+    .light.red { background: #ff5f56; } .light.yellow { background: #ffbd2e; } .light.green { background: #27c93f; }
+    .segmented-tabs {
+      display: flex; background: rgba(0,0,0,0.38); padding: 3px; border-radius: 11px;
+      border: 1px solid rgba(255,255,255,0.12); box-shadow: inset 0 1px 3px rgba(0,0,0,0.6);
+    }
+    .seg-btn {
+      background: transparent; border: none; color: var(--text-secondary); font-family: inherit;
+      font-size: 0.76rem; font-weight: 600; padding: 6px 15px; border-radius: 8px; cursor: pointer; transition: all 0.2s ease;
+    }
+    .seg-btn.active {
+      background: linear-gradient(180deg, rgba(255,255,255,0.22) 0%, rgba(255,255,255,0.1) 100%);
+      color: #ffffff; box-shadow: 0 2px 8px rgba(0,0,0,0.35), inset 0 1px 0.5px rgba(255,255,255,0.4);
+    }
+    .window-meta { font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; color: var(--text-secondary); }
+    .mac-body { display: grid; grid-template-columns: 265px 1fr 305px; min-height: 520px; }
+    .mac-sidebar {
+      background: rgba(0,0,0,0.22); border-right: 1px solid rgba(255,255,255,0.1);
+      padding: 16px 12px; display: flex; flex-direction: column; justify-content: space-between; gap: 12px;
+    }
+    .sidebar-group-title { font-size: 0.7rem; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.06em; padding: 0 12px; margin-bottom: 6px; }
+    .weapon-list { display: flex; flex-direction: column; gap: 3px; }
+    .w-item {
+      background: transparent; border: 1px solid transparent; color: var(--text-secondary);
+      padding: 8px 12px; border-radius: 12px; font-family: inherit; font-size: 0.84rem; font-weight: 500;
+      text-align: left; cursor: pointer; display: flex; justify-content: space-between; align-items: center; transition: all 0.18s ease;
+    }
+    .w-item:hover { background: rgba(255,255,255,0.07); color: var(--text-primary); }
+    .w-item.active {
+      background: linear-gradient(135deg, rgba(0,122,255,0.85) 0%, rgba(90,200,250,0.65) 100%);
+      border-color: rgba(255,255,255,0.35); box-shadow: 0 6px 18px rgba(0,122,255,0.35), inset 0 1px 0.5px rgba(255,255,255,0.45);
+      color: #ffffff; font-weight: 600;
+    }
+    .w-key { font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; padding: 2px 6px; border-radius: 5px; background: rgba(0,0,0,0.28); color: rgba(255,255,255,0.85); }
+    .audio-player-card {
+      background: linear-gradient(135deg, rgba(255,255,255,0.09), rgba(255,255,255,0.02));
+      border: 1px solid rgba(255,255,255,0.14); box-shadow: inset 0 1px 0 rgba(255,255,255,0.25);
+      border-radius: 16px; padding: 12px;
+    }
+    .audio-player-card .track-name { font-size: 0.75rem; font-weight: 600; display: flex; justify-content: space-between; margin-bottom: 6px; }
+    #wave-scope-canvas { width: 100%; height: 42px; background: rgba(4,7,14,0.75); border: 1px solid rgba(255,255,255,0.12); border-radius: 8px; display: block; margin-bottom: 8px; }
+    .mac-content { padding: 22px 26px; display: flex; flex-direction: column; justify-content: space-between; }
+    .w-header-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; margin-bottom: 8px; flex-wrap: wrap; }
+    .w-title { font-size: 1.6rem; font-weight: 700; letter-spacing: -0.02em; }
+    .w-subtitle { font-size: 0.8rem; color: var(--text-secondary); margin-top: 2px; }
+    .w-description { font-size: 0.88rem; color: var(--text-secondary); line-height: 1.52; margin-bottom: 12px; }
+    .range-container {
+      position: relative; border-radius: 16px; overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.2); box-shadow: inset 0 0 30px rgba(0,0,0,0.85);
+      background: #04060b; margin-bottom: 14px;
+    }
+    .range-hud {
+      position: absolute; top: 9px; left: 14px; right: 14px; display: flex; justify-content: space-between;
+      pointer-events: none; font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; color: rgba(255,255,255,0.72);
+    }
+    #firing-range-canvas { width: 100%; height: 210px; display: block; cursor: none; }
+    .specs-list { display: grid; gap: 10px; }
+    .spec-row { display: grid; grid-template-columns: 145px 1fr 56px; align-items: center; gap: 12px; font-size: 0.82rem; }
+    .spec-label { color: var(--text-secondary); font-weight: 500; }
+    .spec-track { height: 7px; background: rgba(255,255,255,0.08); border-radius: 99px; overflow: hidden; }
+    .spec-fill { height: 100%; background: var(--accent-blue); border-radius: 99px; transition: width 0.35s cubic-bezier(0.22, 1, 0.36, 1), background-color 0.25s ease; }
+    .spec-val { font-family: 'JetBrains Mono', monospace; font-size: 0.78rem; text-align: right; }
+    .mac-radar-pane {
+      background: rgba(0,0,0,0.22); border-left: 1px solid rgba(255,255,255,0.1);
+      padding: 20px; display: flex; flex-direction: column; align-items: center; justify-content: space-between;
+    }
+    #radar-canvas {
+      width: 205px; height: 205px; border-radius: 50%;
+      background: radial-gradient(circle, #091220 0%, #04070d 100%);
+      border: 1px solid rgba(255,255,255,0.22); cursor: pointer;
+      box-shadow: inset 0 0 24px rgba(0,0,0,0.85), 0 10px 28px rgba(0,0,0,0.45);
+    }
+    .crosshair-tuner {
+      width: 100%; background: linear-gradient(135deg, rgba(255,255,255,0.08), rgba(255,255,255,0.02));
+      border: 1px solid rgba(255,255,255,0.14); border-radius: 16px; padding: 12px;
+    }
+    .tuner-title { font-size: 0.72rem; font-weight: 600; color: var(--text-secondary); text-transform: uppercase; margin-bottom: 10px; display: flex; justify-content: space-between; }
+    .color-dots { display: flex; gap: 8px; margin-bottom: 10px; }
+    .c-dot { width: 22px; height: 22px; border-radius: 50%; border: 2px solid transparent; cursor: pointer; transition: transform 0.15s; }
+    .c-dot.active { border-color: #ffffff; transform: scale(1.16); }
+    .ch-style-btns { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+    .ch-btn { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); color: var(--text-secondary); font-size: 0.72rem; font-weight: 600; padding: 6px 8px; border-radius: 8px; cursor: pointer; }
+    .ch-btn.active { background: rgba(255,255,255,0.18); color: #ffffff; border-color: rgba(255,255,255,0.35); }
+    /* Sections & Bento */
+    section { padding: 80px 0; }
+    .section-head { margin-bottom: 38px; }
+    .section-head h2 { font-size: clamp(2rem, 4vw, 2.75rem); font-weight: 700; letter-spacing: -0.025em; margin-bottom: 10px; }
+    .section-head p { font-size: 1.06rem; color: var(--text-secondary); max-width: 600px; }
+    .bento-grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 18px; }
+    .bento-card {
+      border-radius: var(--radius-lg); padding: 30px; display: flex; flex-direction: column; justify-content: space-between;
+      overflow: hidden; cursor: pointer; transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.25s ease;
+    }
+    .bento-card::before {
+      content: ""; position: absolute; inset: 0;
+      background: radial-gradient(450px circle at var(--mx, 50%) var(--my, 50%), rgba(255,255,255,0.12), transparent 45%);
+      opacity: 0; transition: opacity 0.3s; pointer-events: none;
+    }
+    .bento-card:hover::before { opacity: 1; }
+    .bento-card:hover { border-color: rgba(255,255,255,0.32); transform: translateY(-4px); }
+    .col-6 { grid-column: span 6; } .col-4 { grid-column: span 4; } .col-3 { grid-column: span 3; }
+    .card-pill {
+      display: inline-block; font-size: 0.74rem; font-weight: 600; padding: 4px 12px; border-radius: 99px;
+      background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.16); margin-bottom: 16px; width: fit-content;
+    }
+    .bento-card h3 { font-size: 1.35rem; font-weight: 600; margin-bottom: 8px; }
+    .bento-card p { color: var(--text-secondary); font-size: 0.92rem; line-height: 1.58; }
+    .bento-meta { margin-top: 22px; padding-top: 14px; border-top: 1px solid rgba(255,255,255,0.1); display: flex; gap: 12px; flex-wrap: wrap; font-size: 0.78rem; font-weight: 500; }
+    .kbd-showcase { margin-top: 24px; border-radius: var(--radius-lg); padding: 28px; display: grid; grid-template-columns: auto 1fr; gap: 32px; align-items: center; }
+    .kbd-keys { display: flex; gap: 10px; flex-wrap: wrap; }
+    .mac-key {
+      width: 56px; height: 56px; border-radius: 14px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.14) 0%, rgba(255,255,255,0.04) 100%);
+      border: 1px solid rgba(255,255,255,0.24); box-shadow: 0 5px 0 rgba(255,255,255,0.1), inset 0 1px 1px rgba(255,255,255,0.4);
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      cursor: pointer; transition: all 0.12s ease; font-family: 'JetBrains Mono', monospace; font-weight: 600; font-size: 0.92rem;
+    }
+    .mac-key span { font-size: 0.58rem; color: var(--text-secondary); margin-top: 2px; }
+    .mac-key:hover, .mac-key.active {
+      background: linear-gradient(180deg, #2997ff 0%, #0071e3 100%); border-color: #ffffff;
+      transform: translateY(3px); box-shadow: 0 2px 0 rgba(0,113,227,0.6), 0 0 20px rgba(0,122,255,0.5);
+    }
+    .mac-key:hover span, .mac-key.active span { color: #ffffff; }
+    .kbd-info h4 { font-size: 1.15rem; font-weight: 600; margin-bottom: 4px; }
+    .kbd-info p { font-size: 0.92rem; color: var(--text-secondary); }
+    .download-banner { border-radius: var(--radius-xl); padding: 64px 32px; text-align: center; }
+    .download-banner h2 { font-size: clamp(2.1rem, 4vw, 3rem); font-weight: 800; margin-bottom: 12px; }
+    .download-banner p { color: var(--text-secondary); font-size: 1.05rem; max-width: 520px; margin: 0 auto 28px; }
+    .sys-notes { margin-top: 18px; font-size: 0.8rem; color: var(--text-secondary); }
+    .floating-dock-wrap { position: fixed; bottom: 16px; left: 50%; transform: translateX(-50%); z-index: 180; }
+    .floating-dock { padding: 8px 14px; border-radius: 999px; display: flex; align-items: center; gap: 10px; }
+    .dock-btn {
+      background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.18);
+      box-shadow: inset 0 1px 0.5px rgba(255,255,255,0.35); color: var(--text-primary);
+      padding: 8px 15px; border-radius: 999px; font-family: inherit; font-size: 0.78rem; font-weight: 600;
+      cursor: pointer; text-decoration: none; transition: all 0.2s ease; white-space: nowrap;
+    }
+    .dock-btn:hover { background: rgba(255,255,255,0.2); transform: translateY(-4px) scale(1.06); }
+    footer { padding: 36px 0; border-top: 1px solid rgba(255,255,255,0.08); font-size: 0.82rem; color: var(--text-secondary); display: flex; justify-content: space-between; align-items: center; }
+    @media (max-width: 960px) {
+      .mac-body, .kbd-showcase { grid-template-columns: 1fr; }
+      .col-6, .col-4, .col-3 { grid-column: span 12; }
+      .floating-dock-wrap { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="liquid-canvas-bg">
+    <div class="fluid-blob blob-1" id="blob-1"></div>
+    <div class="fluid-blob blob-2" id="blob-2"></div>
+    <div class="fluid-blob blob-3" id="blob-3"></div>
+  </div>
+
+  <!-- iPhone Dynamic Island -->
+  <div class="dynamic-island-wrap">
+    <div class="dynamic-island" id="dynamic-island" onclick="toggleOST()">
+      <div class="island-left">
+        <span class="island-dot" id="island-dot"></span>
+        <span id="island-text">ZEROKS · SECTOR-Zero by FortDen</span>
+      </div>
+      <div class="island-eq" id="island-eq">
+        <span class="eq-bar"></span><span class="eq-bar"></span><span class="eq-bar"></span><span class="eq-bar"></span>
+      </div>
+    </div>
+  </div>
+
+  <header>
+    <div class="container nav-bar">
+      <a href="index.html" class="brand">
+        <span class="brand-tag">ZEROKS</span>
+        <span>SECTOR-Zero</span>
+        <span class="author-badge">by <strong>FortDen</strong></span>
+      </a>
+      <div class="nav-right">
+        <a href="index.html" class="btn btn-glass btn-sm">← На главную ZEROKS</a>
+        <button class="btn btn-glass btn-sm" onclick="cycleGlassTheme()">Оттенок жидкого стекла</button>
+        <a href="https://www.mediafire.com/file/zvx8f3h1fdh14xy/SECTOR-Zero.exe/file" target="_blank" rel="noopener" class="btn btn-primary btn-sm js-download-link">Скачать</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="hero" id="overview">
+      <div class="hero-pill">
+        <span>ZEROKS Originals</span> · Engineered by <strong>FortDen</strong>
+      </div>
+      <h1>SECTOR-Zero</h1>
+      <p>
+        Скоростной тактический шутер от первого лица. Семь видов вооружения по слотам 1–7, оригинальный синтез звука 1:1 из игры, четыре класса оперативников и два режима боя.
+      </p>
+      <div class="hero-actions">
+        <a href="https://www.mediafire.com/file/zvx8f3h1fdh14xy/SECTOR-Zero.exe/file" target="_blank" rel="noopener" class="btn btn-primary js-download-link">Скачать для Windows (.EXE)</a>
+        <a href="#classes" class="btn btn-glass">Классы оперативников</a>
+      </div>
+
+      <!-- Главное окно macOS Liquid Glass -->
+      <div class="mac-window liquid-glass" id="mac-window">
+        <div class="mac-titlebar">
+          <div class="traffic-lights">
+            <span class="light red"></span><span class="light yellow"></span><span class="light green"></span>
+          </div>
+          <div class="segmented-tabs">
+            <button class="seg-btn active" onclick="switchPresetClass(0)">Ronin [6]</button>
+            <button class="seg-btn" onclick="switchPresetClass(1)">Vanguard [1]</button>
+            <button class="seg-btn" onclick="switchPresetClass(2)">Juggernaut [2]</button>
+            <button class="seg-btn" onclick="switchPresetClass(3)">Phantom [3]</button>
+          </div>
+          <div class="window-meta">SECTOR-Zero · by FortDen</div>
+        </div>
+
+        <div class="mac-body">
+          <!-- Левая панель: Оружие строго 1 -> 7 + Осциллограф -->
+          <div class="mac-sidebar">
+            <div>
+              <div class="sidebar-group-title">Арсенал по порядку (1–7)</div>
+              <div class="weapon-list">
+                <button class="w-item active" onclick="selectWeapon(0)"><span>Pulse Rifle AR-09</span><span class="w-key">1</span></button>
+                <button class="w-item" onclick="selectWeapon(1)"><span>Plasma Shotgun SG-X</span><span class="w-key">2</span></button>
+                <button class="w-item" onclick="selectWeapon(2)"><span>Gauss Railgun GZ-99</span><span class="w-key">3</span></button>
+                <button class="w-item" onclick="selectWeapon(3)"><span>Rocket Launcher RL-V4</span><span class="w-key">4</span></button>
+                <button class="w-item" onclick="selectWeapon(4)"><span>Tesla Arc Cannon EL-3</span><span class="w-key">5</span></button>
+                <button class="w-item" onclick="selectWeapon(5)"><span>HF-Katana Blade</span><span class="w-key">6</span></button>
+                <button class="w-item" onclick="selectWeapon(6)"><span>Cyber Shurikens</span><span class="w-key">7</span></button>
+              </div>
+            </div>
+
+            <div class="audio-player-card">
+              <div class="track-name">
+                <span>WAV-синтезатор из игры</span>
+                <span style="color:var(--accent-cyan);font-family:'JetBrains Mono',monospace;">22050 Hz</span>
+              </div>
+              <canvas id="wave-scope-canvas" width="215" height="42"></canvas>
+              <button id="ost-btn" class="btn btn-glass btn-sm" style="width:100%;" onclick="toggleOST()">Включить Darksynth OST</button>
+            </div>
+          </div>
+
+          <!-- Центральная панель: Живой полигон -->
+          <div class="mac-content">
+            <div>
+              <div class="w-header-top">
+                <div>
+                  <div id="w-title" class="w-title">Pulse Rifle AR-09</div>
+                  <div id="w-sub" class="w-subtitle">Слот [1] · Импульсный карабин · 30 патронов</div>
+                </div>
+                <div style="display:flex;gap:6px;flex-wrap:wrap;">
+                  <button class="btn btn-glass btn-sm" onclick="triggerEmpNovaRange()">EMP Nova [F4]</button>
+                  <button id="slowmo-btn" class="btn btn-glass btn-sm" onclick="toggleRangeSlowMo()">Slow-Mo [Q]</button>
+                  <button class="btn btn-glass btn-sm" onclick="triggerRangeShot(260, 100, false)">Тест звука</button>
+                </div>
+              </div>
+              <p id="w-desc" class="w-description">
+                Универсальное автоматическое оружие с высокой кучностью стрельбы. При прицеливании на правую кнопку мыши полностью гасит разброс и наносит двукратный критический урон в голову.
+              </p>
+
+              <div class="range-container">
+                <div class="range-hud">
+                  <span>ЛКМ: ВЫСТРЕЛ · ПКМ: IAIDO ВОЛНА / ПРИЦЕЛ · [F]: ПАРИРОВАНИЕ</span>
+                  <span id="range-score">ФРАГОВ: 0</span>
+                </div>
+                <canvas id="firing-range-canvas" width="520" height="210"></canvas>
+              </div>
+            </div>
+
+            <div class="specs-list">
+              <div class="spec-row">
+                <span class="spec-label">Урон</span>
+                <div class="spec-track"><div id="bar-dmg" class="spec-fill" style="width:45%;background-color:#007aff;"></div></div>
+                <span id="val-dmg" class="spec-val">28</span>
+              </div>
+              <div class="spec-row">
+                <span class="spec-label">Темп атаки</span>
+                <div class="spec-track"><div id="bar-rof" class="spec-fill" style="width:92%;background-color:#007aff;"></div></div>
+                <span id="val-rof" class="spec-val">92%</span>
+              </div>
+              <div class="spec-row">
+                <span class="spec-label">Эффективная дальность</span>
+                <div class="spec-track"><div id="bar-rng" class="spec-fill" style="width:85%;background-color:#007aff;"></div></div>
+                <span id="val-rng" class="spec-val">85 м</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Правая панель: Радар и кастомизация прицела -->
+          <div class="mac-radar-pane">
+            <canvas id="radar-canvas" width="205" height="205"></canvas>
+            <div class="crosshair-tuner">
+              <div class="tuner-title">
+                <span>Прицел в тире</span>
+                <span id="ch-mode-label">CS2 Dynamic</span>
+              </div>
+              <div class="color-dots">
+                <span class="c-dot active" style="background:#5ac8fa;" onclick="setCrosshairColor('#5ac8fa', this)"></span>
+                <span class="c-dot" style="background:#30d158;" onclick="setCrosshairColor('#30d158', this)"></span>
+                <span class="c-dot" style="background:#ff375f;" onclick="setCrosshairColor('#ff375f', this)"></span>
+                <span class="c-dot" style="background:#ff9f0a;" onclick="setCrosshairColor('#ff9f0a', this)"></span>
+                <span class="c-dot" style="background:#ffffff;" onclick="setCrosshairColor('#ffffff', this)"></span>
+              </div>
+              <div class="ch-style-btns">
+                <button class="ch-btn active" onclick="setCrosshairStyle(0, 'Dynamic', this)">Dynamic</button>
+                <button class="ch-btn" onclick="setCrosshairStyle(1, 'Dot Only', this)">Dot Only</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Классы оперативников -->
+    <section id="classes">
+      <div class="section-head">
+        <h2>Четыре класса. Мгновенная смена.</h2>
+        <p>Нажми на любую карточку класса, чтобы загрузить его вооружение на стрелковый полигон.</p>
+      </div>
+      <div class="bento-grid">
+        <div class="bento-card liquid-glass col-3" onclick="switchPresetClass(0)">
+          <div>
+            <span class="card-pill" style="color:var(--accent-pink);">Ronin · Слот [6]</span>
+            <h3>Кибер-самурай</h3>
+            <p>Максимальная скорость передвижения, двойной прыжок в воздухе, высокочастотная катана и плазменные сюрикены.</p>
+          </div>
+          <div class="bento-meta"><span>100 HP · 65 SHLD</span><span>2 прыжка</span></div>
+        </div>
+        <div class="bento-card liquid-glass col-3" onclick="switchPresetClass(1)">
+          <div>
+            <span class="card-pill" style="color:var(--accent-cyan);">Vanguard · Слот [1]</span>
+            <h3>Штурмовик</h3>
+            <p>Ускоренные сервоприводы затвора повышают скорострельность всего стрелкового вооружения на 20%.</p>
+          </div>
+          <div class="bento-meta"><span>110 HP · 60 SHLD</span><span>+20% темп огня</span></div>
+        </div>
+        <div class="bento-card liquid-glass col-3" onclick="switchPresetClass(2)">
+          <div>
+            <span class="card-pill" style="color:var(--accent-orange);">Juggernaut · Слот [2]</span>
+            <h3>Тяжёлый экзокостюм</h3>
+            <p>Усиленная броня и генератор щита повышенной ёмкости. Ударная волна Ground Slam наносит двойной урон по площади.</p>
+          </div>
+          <div class="bento-meta"><span>160 HP · 100 SHLD</span><span>2× Ground Slam</span></div>
+        </div>
+        <div class="bento-card liquid-glass col-3" onclick="switchPresetClass(3)">
+          <div>
+            <span class="card-pill" style="color:var(--accent-green);">Phantom · Слот [3]</span>
+            <h3>Спецагент</h3>
+            <p>Оптический нейроинтерфейс увеличивает критический урон в голову до 2.8× и ускоряет перезарядку крюка-кошки.</p>
+          </div>
+          <div class="bento-meta"><span>95 HP · 55 SHLD</span><span>2.8× крит в голову</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Режимы -->
+    <section id="modes" style="padding-top:0;">
+      <div class="section-head">
+        <h2>Два сценария боя.</h2>
+        <p>Выбирай между тактической зачисткой изолированных отсеков бункера и скоростным выживанием на многоуровневой арене.</p>
+      </div>
+      <div class="bento-grid">
+        <div class="bento-card liquid-glass col-6">
+          <div>
+            <span class="card-pill" style="color:var(--accent-green);">Bunker Breach</span>
+            <h3>Штурм подземного комплекса</h3>
+            <p>Исследуй закрытые сектора бункера, находи карты доступа трёх уровней и активируй терминалы снабжения, чтобы открыть гермодвери к главному реактору.</p>
+          </div>
+          <div class="bento-meta"><span>Карты доступа LVL 1–3</span><span>·</span><span>Гермодвери</span><span>·</span><span>Босс-хранитель</span></div>
+        </div>
+        <div class="bento-card liquid-glass col-6">
+          <div>
+            <span class="card-pill" style="color:var(--accent-cyan);">Arena Overdrive</span>
+            <h3>Бесконечные волны на арене</h3>
+            <p>Двухуровневый полигон со снайперскими балконами, прыжковыми платформами и взрывными бочками. В бою доступен полевой магазин улучшения характеристик и турелей.</p>
+          </div>
+          <div class="bento-meta"><span>Рейтинг стиля</span><span>·</span><span>Авто-турели</span><span>·</span><span>Таблица рекордов</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Клавиатура -->
+    <section id="mechanics" style="padding-top:0;">
+      <div class="section-head">
+        <h2>Тактическое управление.</h2>
+        <p>Нажимай клавиши 1–7, E, F, C, Q, V, F4 или Tab прямо на своей клавиатуре — сайт воспроизведёт точный игровой звук.</p>
+      </div>
+      <div class="kbd-showcase liquid-glass">
+        <div class="kbd-keys">
+          <div class="mac-key active" data-key="e" onclick="selectKeyInfo('e', this)">E<span>Hook</span></div>
+          <div class="mac-key" data-key="f" onclick="selectKeyInfo('f', this)">F<span>Parry</span></div>
+          <div class="mac-key" data-key="c" onclick="selectKeyInfo('c', this)">C<span>Slam</span></div>
+          <div class="mac-key" data-key="q" onclick="selectKeyInfo('q', this)">Q<span>Slow</span></div>
+          <div class="mac-key" data-key="v" onclick="selectKeyInfo('v', this)">V<span>Turret</span></div>
+          <div class="mac-key" data-key="f4" onclick="selectKeyInfo('f4', this)">F4<span>EMP</span></div>
+          <div class="mac-key" data-key="tab" onclick="selectKeyInfo('tab', this)">Tab<span>Class</span></div>
+        </div>
+        <div class="kbd-info">
+          <h4 id="kbd-title">Клавиша E — Энергетический крюк и взаимодействие</h4>
+          <p id="kbd-desc">Выстреливает плазменным тросом на дистанцию до 48 метров, мгновенно притягивая к балконам второго яруса или врагам. Вблизи открывает гермодвери и активирует терминалы.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Скачивание -->
+    <section id="download" style="padding-top:16px;">
+      <div class="download-banner liquid-glass">
+        <h2>SECTOR-Zero</h2>
+        <p>Нативная сборка для Windows. Скачай исполняемый файл и запусти игру без установки дополнительных библиотек.</p>
+        <a href="https://www.mediafire.com/file/zvx8f3h1fdh14xy/SECTOR-Zero.exe/file" target="_blank" rel="noopener" id="main-download-btn" class="btn btn-primary js-download-link" style="padding:15px 38px;font-size:1.02rem;">Скачать SECTOR-Zero (.EXE)</a>
+        <div class="sys-notes">Windows 10 / 11 (x64) · ZEROKS Project by <strong>FortDen</strong></div>
+      </div>
+    </section>
+  </main>
+
+  <div class="floating-dock-wrap">
+    <div class="floating-dock liquid-glass">
+      <a href="index.html" class="dock-btn">← ZEROKS Hub</a>
+      <a href="#overview" class="dock-btn">Полигон [1–7]</a>
+      <button class="dock-btn" onclick="triggerEmpNovaRange()">EMP Nova [F4]</button>
+      <button class="dock-btn" onclick="toggleRangeSlowMo()">Slow-Mo [Q]</button>
+      <button class="dock-btn" onclick="toggleOST()">Darksynth OST</button>
+      <a href="https://www.mediafire.com/file/zvx8f3h1fdh14xy/SECTOR-Zero.exe/file" target="_blank" rel="noopener" class="dock-btn js-download-link" style="background:var(--accent-blue);border-color:rgba(255,255,255,0.4);">Скачать .EXE</a>
+    </div>
+  </div>
+
+  <footer class="container">
+    <div><strong>ZEROKS</strong> — SECTOR-Zero by <strong>FortDen</strong></div>
+    <div>2026 · Liquid Glass Edition</div>
+  </footer>
+
+  <script>
+    // ССЫЛКА НА СКАЧИВАНИЕ ИГРЫ С MEDIAFIRE
+    const DOWNLOAD_URL = "https://www.mediafire.com/file/zvx8f3h1fdh14xy/SECTOR-Zero.exe/file";
+    document.querySelectorAll('.js-download-link').forEach(link => {
+      link.href = DOWNLOAD_URL;
+      link.target = "_blank";
+      link.rel = "noopener";
+    });
+
+    document.querySelectorAll('.bento-card').forEach(card => {
+      card.addEventListener('mousemove', e => {
+        const rect = card.getBoundingClientRect();
+        card.style.setProperty('--mx', `${e.clientX - rect.left}px`);
+        card.style.setProperty('--my', `${e.clientY - rect.top}px`);
+      });
+    });
+
+    let themeIdx = 0;
+    const THEMES = [
+      ['#007aff', '#ff375f', '#5ac8fa'],
+      ['#30d158', '#007aff', '#ffd60a'],
+      ['#bf5af2', '#ff375f', '#ff9f0a']
+    ];
+    function cycleGlassTheme() {
+      themeIdx = (themeIdx + 1) % THEMES.length;
+      const [c1, c2, c3] = THEMES[themeIdx];
+      document.getElementById('blob-1').style.background = `radial-gradient(circle, ${c1} 0%, transparent 70%)`;
+      document.getElementById('blob-2').style.background = `radial-gradient(circle, ${c2} 0%, transparent 70%)`;
+      document.getElementById('blob-3').style.background = `radial-gradient(circle, ${c3} 0%, transparent 75%)`;
+      notifyIsland('Стеклянная тема обновлена', c1);
+      playGameSfx('ui');
+    }
+
+    let islandTimeout = null;
+    function notifyIsland(text, dotColor = '#30d158') {
+      const island = document.getElementById('dynamic-island');
+      const txtEl = document.getElementById('island-text');
+      const dotEl = document.getElementById('island-dot');
+      island.classList.add('expanded');
+      txtEl.textContent = text;
+      dotEl.style.background = dotColor;
+      dotEl.style.boxShadow = `0 0 12px ${dotColor}`;
+      clearTimeout(islandTimeout);
+      islandTimeout = setTimeout(() => {
+        island.classList.remove('expanded');
+        txtEl.textContent = ostPlaying ? 'DARKSYNTH OST · LIVE' : 'ZEROKS · SECTOR-Zero by FortDen';
+      }, 2200);
+    }
+
+    // СТРОГИЙ ПОРЯДОК ОРУЖИЯ 1 -> 7
+    const WEAPONS = [
+      {
+        slot: 1, title: 'Pulse Rifle AR-09', sub: 'Слот [1] · Импульсный карабин · 30 патронов',
+        desc: 'Универсальное автоматическое оружие с высокой кучностью стрельбы. При прицеливании на правую кнопку мыши полностью гасит разброс и наносит двукратный критический урон в голову.',
+        dmgW: '45%', dmgV: '28', rofW: '92%', rofV: '92%', rngW: '85%', rngV: '85 м', color: '#007aff', sfx: 'rifle', pitch: 1.0
+      },
+      {
+        slot: 2, title: 'Plasma Shotgun SG-X', sub: 'Слот [2] · Плазменный дробовик · 8 патронов',
+        desc: 'Выпускает плотный веер из восьми раскалённых зарядов. Создан для ближнего боя в отсеках бункера и мгновенного уничтожения быстрых целей.',
+        dmgW: '88%', dmgV: '176', rofW: '48%', rofV: '48%', rngW: '40%', rngV: '42 м', color: '#ff9f0a', sfx: 'shotgun', pitch: 1.0
+      },
+      {
+        slot: 3, title: 'Gauss Railgun GZ-99', sub: 'Слот [3] · Снайперский рельсотрон · 4 заряда',
+        desc: 'Сверхзвуковой электромагнитный ускоритель. Пробивает тяжёлую броню штурмовиков и наносит максимальный критический урон с верхних балконов арены.',
+        dmgW: '98%', dmgV: '155', rofW: '32%', rofV: '32%', rngW: '100%', rngV: '100 м', color: '#bf5af2', sfx: 'railgun', pitch: 1.0
+      },
+      {
+        slot: 4, title: 'Rocket Launcher RL-V4', sub: 'Слот [4] · Ракетная установка · 5 ракет',
+        desc: 'Тяжёлый гранатомёт с большим радиусом фугасного поражения. Позволяет подрывать группы противников и вызывать цепную детонацию взрывных бочек.',
+        dmgW: '92%', dmgV: '140', rofW: '38%', rofV: '38%', rngW: '75%', rngV: '75 м', color: '#30d158', sfx: 'shotgun', pitch: 0.7
+      },
+      {
+        slot: 5, title: 'Tesla Arc Cannon EL-3', sub: 'Слот [5] · Дуговая пушка · 18 зарядов',
+        desc: 'Генератор высоковольтной дуги. При попадании в цель электрический разряд автоматически переходит по цепочке ещё на двух ближайших противников.',
+        dmgW: '76%', dmgV: '46×3', rofW: '74%', rofV: '74%', rngW: '55%', rngV: '36 м', color: '#5ac8fa', sfx: 'tesla', pitch: 1.0
+      },
+      {
+        slot: 6, title: 'HF-Katana Blade', sub: 'Слот [6] · Высокочастотная катана · ПКМ: Iaido Wave',
+        desc: 'Фирменное оружие класса Ronin. Быстрые диагональные взмахи рассекают врагов вблизи, автоматически отражают снаряды и выпускают энергетическую волну Iaido на ПКМ.',
+        dmgW: '86%', dmgV: '80 / 145', rofW: '88%', rofV: '88%', rngW: '35%', rngV: 'Ближний', color: '#ff375f', sfx: 'katana', pitch: 1.0
+      },
+      {
+        slot: 7, title: 'Cyber Shurikens', sub: 'Слот [7] · Плазменные сюрикены · 24 звезды',
+        desc: 'Метательные четырёхлучевые звёзды с неоновым сердечником. Бросок выпускает веер из трёх сюрикенов с высоким критическим уроном в голову.',
+        dmgW: '74%', dmgV: '38×3', rofW: '84%', rofV: '84%', rngW: '70%', rngV: '65 м', color: '#5ac8fa', sfx: 'shuriken', pitch: 1.0
+      }
+    ];
+
+    let activeWeapon = 0;
+
+    function selectWeapon(idx) {
+      activeWeapon = idx;
+      const w = WEAPONS[idx];
+      document.querySelectorAll('.w-item').forEach((el, i) => el.classList.toggle('active', i === idx));
+      document.getElementById('w-title').textContent = w.title;
+      document.getElementById('w-sub').textContent = w.sub;
+      document.getElementById('w-desc').textContent = w.desc;
+
+      const bDmg = document.getElementById('bar-dmg');
+      const bRof = document.getElementById('bar-rof');
+      const bRng = document.getElementById('bar-rng');
+      [bDmg, bRof, bRng].forEach(b => b.style.backgroundColor = w.color);
+      bDmg.style.width = w.dmgW; bRof.style.width = w.rofW; bRng.style.width = w.rngW;
+      document.getElementById('val-dmg').textContent = w.dmgV;
+      document.getElementById('val-rof').textContent = w.rofV;
+      document.getElementById('val-rng').textContent = w.rngV;
+
+      notifyIsland(`[${w.slot}] ${w.title}`, w.color);
+      playGameSfx(w.sfx, 0.85, w.pitch);
+    }
+
+    function switchPresetClass(clsIdx) {
+      document.querySelectorAll('.seg-btn').forEach((b, i) => b.classList.toggle('active', i === clsIdx));
+      const startMap = [5, 0, 1, 2];
+      selectWeapon(startMap[clsIdx]);
+    }
+
+    // ОРИГИНАЛЬНЫЙ ГЕНЕРАТОР WAV ИЗ ИГРЫ SECTOR_ZERO.PY
+    let audioCtx = null;
+    let analyser = null;
+    let masterGain = null;
+    const cachedBuffers = {};
+    let ostSource = null;
+    let ostPlaying = false;
+
+    function randUniform(a, b) {
+      return a + Math.random() * (b - a);
+    }
+
+    function pyMod1(x) {
+      return ((x % 1.0) + 1.0) % 1.0;
+    }
+
+    function buildWavBuffer(duration, generatorFn, sr = 22050) {
+      const nSamples = Math.floor(sr * duration);
+      const buf = audioCtx.createBuffer(1, nSamples, sr);
+      const ch = buf.getChannelData(0);
+      for (let i = 0; i < nSamples; i++) {
+        const t = i / sr;
+        const p = i / nSamples;
+        ch[i] = Math.max(-1.0, Math.min(1.0, generatorFn(t, p, i)));
+      }
+      return buf;
+    }
+
+    function initGameAudioEngine() {
+      if (audioCtx) {
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+        return;
+      }
+      audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      analyser = audioCtx.createAnalyser();
+      analyser.fftSize = 256;
+      masterGain = audioCtx.createGain();
+      masterGain.gain.value = 0.65;
+      masterGain.connect(analyser);
+      analyser.connect(audioCtx.destination);
+
+      const twoPi = Math.PI * 2;
+
+      cachedBuffers.rifle = buildWavBuffer(0.11, (t, p) =>
+        (Math.sin(twoPi * (440 - 330 * p) * t) * 0.6 + randUniform(-0.35, 0.35)) * Math.pow(1 - p, 1.5)
+      );
+      cachedBuffers.shotgun = buildWavBuffer(0.25, (t, p) =>
+        (randUniform(-1, 1) * 0.8 + Math.sin(twoPi * 90 * t) * 0.5) * Math.pow(1 - p, 1.8)
+      );
+      cachedBuffers.railgun = buildWavBuffer(0.40, (t, p) =>
+        (Math.sin(twoPi * (950 - 700 * p) * t) * 0.7 + Math.sin(twoPi * 1900 * t) * 0.3) * (1 - p)
+      );
+      cachedBuffers.tesla = buildWavBuffer(0.22, (t, p) =>
+        (Math.sin(twoPi * (680 + Math.sin(t * 240) * 320) * t) * 0.6 + randUniform(-0.4, 0.4)) * (1 - p)
+      );
+      cachedBuffers.katana = buildWavBuffer(0.16, (t, p) =>
+        (randUniform(-0.7, 0.7) * Math.sin(Math.PI * p) + Math.sin(twoPi * (920 - 620 * p) * t) * 0.55) * (1 - p)
+      );
+      cachedBuffers.shuriken = buildWavBuffer(0.10, (t, p) =>
+        (Math.sin(twoPi * (1600 - 900 * p) * t) * 0.5 + randUniform(-0.3, 0.3)) * Math.pow(1 - p, 1.6)
+      );
+      cachedBuffers.explosion = buildWavBuffer(0.50, (t, p) =>
+        (randUniform(-1, 1) * 0.9 + Math.sin(twoPi * 50 * t) * 0.6) * Math.pow(1 - p, 1.4)
+      );
+      cachedBuffers.hit = buildWavBuffer(0.06, (t, p) =>
+        Math.sin(twoPi * 1500 * t) * Math.pow(1 - p, 2)
+      );
+      cachedBuffers.jump = buildWavBuffer(0.22, (t, p) =>
+        Math.sin(twoPi * (240 + 650 * p) * t) * (0.5 * (1 - p))
+      );
+      cachedBuffers.hook = buildWavBuffer(0.24, (t, p) =>
+        (Math.sin(twoPi * (320 + 920 * p) * t) * 0.6 + randUniform(-0.2, 0.2)) * (1 - p)
+      );
+      cachedBuffers.slam = buildWavBuffer(0.42, (t, p) =>
+        (Math.sin(twoPi * (140 - 110 * p) * t) * 0.8 + randUniform(-0.5, 0.5)) * Math.pow(1 - p, 1.3)
+      );
+      cachedBuffers.parry = buildWavBuffer(0.28, (t, p) =>
+        (Math.sin(twoPi * 1760 * t) + Math.sin(twoPi * 2640 * t)) * 0.45 * Math.pow(1 - p, 1.2)
+      );
+      cachedBuffers.ui = buildWavBuffer(0.05, (t, p) =>
+        Math.sin(twoPi * 1100 * t) * Math.pow(1 - p, 1.5)
+      );
+
+      const bassFreqs = [
+        73.42, 73.42, 146.83, 73.42, 73.42, 73.42, 130.81, 146.83,
+        87.31, 87.31, 174.61, 87.31, 98.00, 98.00, 110.00, 87.31
+      ];
+      const arpFreqs = [
+        293.66, 349.23, 440.00, 587.33, 440.00, 349.23, 523.25, 440.00,
+        349.23, 440.00, 523.25, 698.46, 659.25, 587.33, 440.00, 349.23
+      ];
+      cachedBuffers.ost = buildWavBuffer(8.0, (t, p, i) => {
+        const step16 = Math.floor(t / 0.125);
+        const stepPos = (t % 0.125) / 0.125;
+        const beatPos = (t % 0.5) / 0.5;
+        const kick = Math.sin(twoPi * (135.0 * Math.exp(-beatPos * 16.0) + 42.0) * (t % 0.5)) * Math.exp(-beatPos * 7.5) * 0.55;
+        const inSnare = (Math.floor(t / 0.5) % 2 === 1);
+        const snare = (pyMod1(Math.sin(i * 12.9898) * 43758.5453) * 2.0 - 1.0) * Math.exp(-beatPos * 14.0) * (inSnare ? 0.28 : 0.07);
+        const bf = bassFreqs[step16 % bassFreqs.length];
+        const saw = 2.0 * ((t * bf) - Math.floor(0.5 + t * bf));
+        const sub = Math.sin(twoPi * (bf * 0.5) * t);
+        const bass = (saw * 0.24 + sub * 0.22) * (1.0 - stepPos * 0.65);
+        const af = arpFreqs[step16 % arpFreqs.length];
+        const lead = Math.sin(twoPi * af * t + 0.8 * Math.sin(twoPi * af * 2.0 * t)) * Math.pow(1.0 - stepPos, 1.6) * 0.16;
+        return Math.max(-0.98, Math.min(0.98, kick + snare + bass + lead));
+      });
+    }
+
+    function playGameSfx(name, vol = 0.8, pitch = 1.0) {
+      initGameAudioEngine();
+      const buf = cachedBuffers[name];
+      if (!buf) return;
+      const src = audioCtx.createBufferSource();
+      const g = audioCtx.createGain();
+      src.buffer = buf;
+      src.playbackRate.value = pitch;
+      g.gain.value = vol;
+      src.connect(g);
+      g.connect(masterGain);
+      src.start();
+    }
+
+    function toggleOST() {
+      initGameAudioEngine();
+      const btn = document.getElementById('ost-btn');
+      if (ostPlaying) {
+        if (ostSource) { try { ostSource.stop(); } catch (e) {} ostSource = null; }
+        ostPlaying = false;
+        btn.textContent = 'Включить Darksynth OST';
+        notifyIsland('Саундтрек остановлен', '#ff9f0a');
+        return;
+      }
+      ostSource = audioCtx.createBufferSource();
+      ostSource.buffer = cachedBuffers.ost;
+      ostSource.loop = true;
+      const g = audioCtx.createGain();
+      g.gain.value = 0.55;
+      ostSource.connect(g);
+      g.connect(masterGain);
+      ostSource.start();
+      ostPlaying = true;
+      btn.textContent = 'Остановить Darksynth OST';
+      notifyIsland('DARKSYNTH OST · ИГРАЕТ ОРИГИНАЛ', '#30d158');
+    }
+
+    // Осциллограф
+    const scopeCanvas = document.getElementById('wave-scope-canvas');
+    const sCtx = scopeCanvas.getContext('2d');
+    const timeData = new Uint8Array(128);
+    function renderAudioScope() {
+      const w = scopeCanvas.width, h = scopeCanvas.height;
+      sCtx.clearRect(0, 0, w, h);
+      sCtx.strokeStyle = '#5ac8fa';
+      sCtx.lineWidth = 1.8;
+      sCtx.beginPath();
+      if (analyser && audioCtx && audioCtx.state === 'running') {
+        analyser.getByteTimeDomainData(timeData);
+        for (let i = 0; i < timeData.length; i++) {
+          const v = timeData[i] / 128.0;
+          const y = (v * h) / 2;
+          const x = (i / (timeData.length - 1)) * w;
+          if (i === 0) sCtx.moveTo(x, y); else sCtx.lineTo(x, y);
+        }
+        const bars = document.querySelectorAll('.eq-bar');
+        bars.forEach((b, idx) => {
+          const sample = Math.abs((timeData[idx * 20] - 128) / 128);
+          b.style.height = `${Math.max(4, Math.min(16, 4 + sample * 28))}px`;
+        });
+      } else {
+        sCtx.moveTo(0, h / 2); sCtx.lineTo(w, h / 2);
+      }
+      sCtx.stroke();
+      requestAnimationFrame(renderAudioScope);
+    }
+    renderAudioScope();
+
+    // Клавиатура и горячие клавиши 1-7
+    const KEY_INFO = {
+      'e': ['Клавиша E — Энергетический крюк и взаимодействие', 'Выстреливает плазменным тросом на дистанцию до 48 метров, мгновенно притягивая к балконам второго яруса или врагам.'],
+      'f': ['Клавиша F — Парирование клинком', 'Точный взмах перед собой отражает летящие вражеские снаряды обратно в цель со звуком parry.wav и восстанавливает 100% щита.'],
+      'c': ['Клавиша C — Тактический подкат и Ground Slam', 'На земле включает скоростной подкат, а в воздухе обрушивает персонажа вниз с мощной взрывной волной по площади.'],
+      'q': ['Клавиша Q — Хроно-Овердрайв (Slow-Mo)', 'Замедляет врагов и их снаряды в 3 раза на 4.5 секунды, повышая твою скорострельность.'],
+      'v': ['Клавиша V — Установка Авто-Турели (150$)', 'Размещает на поле боя автономную двухствольную турель, которая автоматически отстреливает цели в зоне видимости.'],
+      'f4': ['Клавиша F4 — Электромагнитный импульс EMP Nova (120$)', 'Уничтожает все вражеские снаряды в воздухе, поражает током всех активных врагов и перезаряжает всё вооружение.'],
+      'tab': ['Клавиша Tab — Мгновенная смена класса', 'Позволяет переключаться между классами Ronin, Vanguard, Juggernaut и Phantom прямо на ходу.']
+    };
+
+    function selectKeyInfo(k, el) {
+      document.querySelectorAll('.mac-key').forEach(b => b.classList.remove('active'));
+      if (el) el.classList.add('active');
+      if (KEY_INFO[k]) {
+        document.getElementById('kbd-title').textContent = KEY_INFO[k][0];
+        document.getElementById('kbd-desc').textContent = KEY_INFO[k][1];
+        if (k === 'q') toggleRangeSlowMo();
+        else if (k === 'f4') triggerEmpNovaRange();
+        else if (k === 'f') triggerParryInRange();
+        else if (k === 'e') playGameSfx('hook');
+        else if (k === 'c') playGameSfx('slam');
+        else playGameSfx('ui');
+      }
+    }
+
+    window.addEventListener('keydown', e => {
+      const k = e.key.toLowerCase();
+      if (['1', '2', '3', '4', '5', '6', '7'].includes(k)) {
+        selectWeapon(parseInt(k) - 1);
+      } else if (KEY_INFO[k]) {
+        e.preventDefault();
+        const btn = document.querySelector(`.mac-key[data-key="${k}"]`);
+        selectKeyInfo(k, btn);
+      }
+    });
+
+    // Стрелковый полигон
+    const rCanvas = document.getElementById('firing-range-canvas');
+    const rCtx = rCanvas.getContext('2d');
+    let mouseX = 260, mouseY = 100, chSpread = 0, chColor = '#5ac8fa', chStyle = 0, rangeHits = 0, rangeSlowMo = false, adsZoom = false;
+
+    const rangeTargets = [
+      { x: 100, y: 110, vx: 1.5, r: 18, hp: 100, maxHp: 100, col: '#ff453a', cd: 90 },
+      { x: 240, y: 80,  vx: -1.9, r: 16, hp: 100, maxHp: 100, col: '#ff9f0a', cd: 140 },
+      { x: 410, y: 120, vx: 1.3, r: 22, hp: 160, maxHp: 160, col: '#ff375f', cd: 110 }
+    ];
+    const barrelObj = { x: 315, y: 150, r: 16, active: true, respawn: 0 };
+    const enemyOrbs = [], iaidoWaves = [], rangeSparks = [], rangeTexts = [], rangeSlashes = [];
+
+    function toggleRangeSlowMo() {
+      rangeSlowMo = !rangeSlowMo;
+      document.getElementById('slowmo-btn').classList.toggle('active-mode', rangeSlowMo);
+      notifyIsland(rangeSlowMo ? 'CHRONO OVERDRIVE · SLOW-MO ON' : 'CHRONO OVERDRIVE · OFF', '#5ac8fa');
+      playGameSfx('parry', 0.8, 0.75);
+    }
+
+    function triggerEmpNovaRange() {
+      playGameSfx('tesla', 0.9, 0.8);
+      playGameSfx('explosion', 0.85, 1.15);
+      notifyIsland('EMP NOVA [F4] · СЕКТОР ЗАЧИЩЕН!', '#5ac8fa');
+      enemyOrbs.length = 0;
+      rangeSlashes.push({ x: 260, y: 105, col: '#5ac8fa', type: 'explosion', life: 1.0 });
+      rangeTargets.forEach(t => {
+        rangeSlashes.push({ x: 260, y: 105, x2: t.x, y2: t.y, col: '#5ac8fa', type: 'chain', life: 1.0 });
+        t.hp = t.maxHp; t.x = 50 + Math.random() * 420; rangeHits++;
+        rangeTexts.push({ x: t.x, y: t.y - 20, txt: '-95 EMP!', col: '#5ac8fa', life: 1.0 });
+      });
+      document.getElementById('range-score').textContent = `ФРАГОВ: ${rangeHits}`;
+    }
+
+    function triggerParryInRange() {
+      playGameSfx('parry', 0.95, 1.0);
+      let parried = false;
+      enemyOrbs.forEach(orb => {
+        if (!orb.reflected) { orb.reflected = true; orb.vy = -6.5; orb.col = '#5ac8fa'; parried = true; }
+      });
+      if (parried) {
+        notifyIsland('+PARRY! СНАРЯД ОТРАЖЁН В ЦЕЛЬ', '#5ac8fa');
+        rangeTexts.push({ x: mouseX, y: mouseY - 16, txt: '+PARRY!', col: '#5ac8fa', life: 1.0 });
+      }
+    }
+
+    function setCrosshairColor(col, el) {
+      chColor = col;
+      document.querySelectorAll('.c-dot').forEach(d => d.classList.remove('active'));
+      el.classList.add('active');
+    }
+
+    function setCrosshairStyle(st, label, el) {
+      chStyle = st;
+      document.getElementById('ch-mode-label').textContent = label;
+      document.querySelectorAll('.ch-btn').forEach(b => b.classList.remove('active'));
+      el.classList.add('active');
+    }
+
+    rCanvas.addEventListener('contextmenu', e => e.preventDefault());
+    rCanvas.addEventListener('mousemove', e => {
+      const rect = rCanvas.getBoundingClientRect();
+      mouseX = (e.clientX - rect.left) * (rCanvas.width / rect.width);
+      mouseY = (e.clientY - rect.top) * (rCanvas.height / rect.height);
+    });
+
+    rCanvas.addEventListener('mousedown', e => {
+      e.preventDefault();
+      const w = WEAPONS[activeWeapon];
+      if (e.button === 2) {
+        if (w.sfx === 'katana') {
+          playGameSfx('katana', 1.0, 0.75);
+          playGameSfx('tesla', 0.7, 1.3);
+          iaidoWaves.push({ x: mouseX, y: 195, vy: -7.5, life: 1.0 });
+          notifyIsland('IAIDO THUNDER SLASH!', '#ff375f');
+        } else {
+          adsZoom = !adsZoom;
+          playGameSfx('ui');
+        }
+      } else {
+        triggerRangeShot(mouseX, mouseY, true);
+      }
+    });
+
+    function detonateRangeBarrel() {
+      barrelObj.active = false; barrelObj.respawn = 180;
+      playGameSfx('explosion', 0.95);
+      rangeSlashes.push({ x: barrelObj.x, y: barrelObj.y, col: '#ff453a', type: 'explosion', life: 1.0 });
+      notifyIsland('BOOM! ВЗРЫВНАЯ БОЧКА ДЕТОНИРОВАЛА', '#ff453a');
+      for (let i = 0; i < 20; i++) {
+        rangeSparks.push({ x: barrelObj.x, y: barrelObj.y, vx: (Math.random() - 0.5) * 10, vy: (Math.random() - 0.5) * 10, col: '#ff9f0a', life: 1.0 });
+      }
+      rangeTargets.forEach(t => {
+        t.hp = t.maxHp; t.x = 50 + Math.random() * 420; rangeHits++;
+        rangeTexts.push({ x: t.x, y: t.y - 20, txt: '-130 BOOM!', col: '#ff453a', life: 1.0 });
+      });
+      document.getElementById('range-score').textContent = `ФРАГОВ: ${rangeHits}`;
+    }
+
+    function triggerRangeShot(tx, ty, allowHitSfx = true) {
+      const w = WEAPONS[activeWeapon];
+      const pitchVar = w.sfx === 'rifle' ? (0.95 + Math.random() * 0.1) : w.pitch;
+      playGameSfx(w.sfx, 0.85, pitchVar);
+      chSpread = adsZoom ? 2 : 12;
+      rangeSlashes.push({ x: tx, y: ty, col: w.color, type: w.sfx, life: 1.0 });
+
+      if (w.sfx === 'katana') {
+        enemyOrbs.forEach(orb => {
+          if (!orb.reflected && Math.hypot(orb.x - tx, orb.y - ty) <= 45) {
+            orb.reflected = true; orb.vy = -7.0; orb.col = '#ff375f';
+            playGameSfx('parry', 0.9);
+            rangeTexts.push({ x: orb.x, y: orb.y, txt: '+DEFLECT!', col: '#ff375f', life: 1.0 });
+          }
+        });
+      }
+
+      if (barrelObj.active && Math.hypot(barrelObj.x - tx, barrelObj.y - ty) <= barrelObj.r + 16) {
+        detonateRangeBarrel();
+        return;
+      }
+
+      rangeTargets.forEach((t, idx) => {
+        const dist = Math.hypot(t.x - tx, t.y - ty);
+        const hitRadius = (w.sfx === 'katana' || w.slot === 4) ? t.r + 38 : t.r + 14;
+        if (dist <= hitRadius) {
+          if (w.slot === 4) playGameSfx('explosion', 0.85);
+          const isCrit = (ty < t.y - 4) || w.sfx === 'katana' || w.sfx === 'railgun' || adsZoom;
+          const dmg = isCrit ? 145 : 55;
+          t.hp -= dmg;
+          if (allowHitSfx) playGameSfx('hit', 0.6, isCrit ? 1.35 : 1.0);
+          rangeTexts.push({ x: t.x + (Math.random() - 0.5) * 14, y: t.y - 18, txt: isCrit ? `-${dmg} CRIT!` : `-${dmg}`, col: isCrit ? '#ffd60a' : w.color, life: 1.0 });
+          for (let i = 0; i < 8; i++) {
+            rangeSparks.push({ x: t.x, y: t.y, vx: (Math.random() - 0.5) * 6, vy: (Math.random() - 0.5) * 6, col: w.color, life: 1.0 });
+          }
+          if (w.sfx === 'tesla') {
+            const nextT = rangeTargets[(idx + 1) % rangeTargets.length];
+            rangeSlashes.push({ x: t.x, y: t.y, x2: nextT.x, y2: nextT.y, col: '#5ac8fa', type: 'chain', life: 1.0 });
+            nextT.hp -= 46;
+          }
+          if (t.hp <= 0) {
+            t.hp = t.maxHp; t.x = 50 + Math.random() * 420; rangeHits++;
+            document.getElementById('range-score').textContent = `ФРАГОВ: ${rangeHits}`;
+          }
+        }
+      });
+    }
+
+    function updateFiringRange() {
+      const w = rCanvas.width, h = rCanvas.height, speedMult = rangeSlowMo ? 0.28 : 1.0;
+      rCtx.fillStyle = rangeSlowMo ? '#040c18' : '#04060b';
+      rCtx.fillRect(0, 0, w, h);
+
+      rCtx.strokeStyle = 'rgba(255,255,255,0.04)';
+      rCtx.lineWidth = 1;
+      for (let x = 0; x < w; x += 40) { rCtx.beginPath(); rCtx.moveTo(x, 0); rCtx.lineTo(x, h); rCtx.stroke(); }
+      for (let y = 0; y < h; y += 40) { rCtx.beginPath(); rCtx.moveTo(0, y); rCtx.lineTo(w, y); rCtx.stroke(); }
+
+      if (barrelObj.active) {
+        rCtx.fillStyle = '#b91c1c'; rCtx.strokeStyle = '#ffd60a'; rCtx.lineWidth = 2;
+        rCtx.beginPath(); rCtx.roundRect(barrelObj.x - 13, barrelObj.y - 18, 26, 36, 4); rCtx.fill(); rCtx.stroke();
+        rCtx.fillStyle = '#ffd60a'; rCtx.fillRect(barrelObj.x - 12, barrelObj.y - 4, 24, 8);
+      } else if (--barrelObj.respawn <= 0) {
+        barrelObj.active = true;
+      }
+
+      rangeTargets.forEach(t => {
+        t.x += t.vx * speedMult;
+        if (t.x < 35 || t.x > w - 35) t.vx *= -1;
+        t.cd -= speedMult;
+        if (t.cd <= 0) {
+          t.cd = 120 + Math.random() * 90;
+          if (enemyOrbs.length < 4) enemyOrbs.push({ x: t.x, y: t.y + 12, vy: 2.2, col: t.col, reflected: false });
+        }
+        rCtx.strokeStyle = t.col; rCtx.lineWidth = 2; rCtx.fillStyle = 'rgba(20,24,34,0.85)';
+        rCtx.beginPath(); rCtx.roundRect(t.x - t.r, t.y - t.r * 1.2, t.r * 2, t.r * 2.4, 6); rCtx.fill(); rCtx.stroke();
+        rCtx.fillStyle = t.col; rCtx.fillRect(t.x - t.r * 0.65, t.y - t.r * 0.75, t.r * 1.3, 6);
+        rCtx.fillStyle = 'rgba(0,0,0,0.8)'; rCtx.fillRect(t.x - 16, t.y - t.r * 1.6, 32, 4);
+        rCtx.fillStyle = t.col; rCtx.fillRect(t.x - 16, t.y - t.r * 1.6, 32 * Math.max(0, t.hp / t.maxHp), 4);
+      });
+
+      for (let i = enemyOrbs.length - 1; i >= 0; i--) {
+        const orb = enemyOrbs[i];
+        orb.y += orb.vy * (orb.reflected ? 1.0 : speedMult);
+        rCtx.fillStyle = orb.col; rCtx.beginPath(); rCtx.arc(orb.x, orb.y, 6, 0, Math.PI * 2); rCtx.fill();
+        if (orb.reflected) {
+          rangeTargets.forEach(t => {
+            if (Math.hypot(t.x - orb.x, t.y - orb.y) < t.r + 12) {
+              t.hp = t.maxHp; t.x = 50 + Math.random() * 420; rangeHits++;
+              document.getElementById('range-score').textContent = `ФРАГОВ: ${rangeHits}`;
+              playGameSfx('explosion', 0.8);
+              rangeTexts.push({ x: t.x, y: t.y, txt: '-150 PARRY!', col: '#5ac8fa', life: 1.0 });
+              orb.y = -50;
+            }
+          });
+        }
+        if (orb.y > h + 10 || orb.y < -10) enemyOrbs.splice(i, 1);
+      }
+
+      for (let i = iaidoWaves.length - 1; i >= 0; i--) {
+        const iw = iaidoWaves[i];
+        iw.y += iw.vy; iw.life -= 0.03;
+        rCtx.strokeStyle = '#ff375f'; rCtx.lineWidth = 4;
+        rCtx.beginPath(); rCtx.arc(iw.x, iw.y + 18, 38, Math.PI * 1.15, Math.PI * 1.85); rCtx.stroke();
+        rangeTargets.forEach(t => {
+          if (Math.abs(t.x - iw.x) < 46 && Math.abs(t.y - iw.y) < 22) {
+            t.hp = t.maxHp; t.x = 50 + Math.random() * 420; rangeHits++;
+            document.getElementById('range-score').textContent = `ФРАГОВ: ${rangeHits}`;
+            playGameSfx('hit', 0.7, 1.35);
+            rangeTexts.push({ x: t.x, y: t.y - 16, txt: '-145 IAIDO!', col: '#ff375f', life: 1.0 });
+          }
+        });
+        if (iw.y < 0 || iw.life <= 0) iaidoWaves.splice(i, 1);
+      }
+
+      for (let i = rangeSlashes.length - 1; i >= 0; i--) {
+        const sl = rangeSlashes[i]; sl.life -= 0.07;
+        if (sl.life <= 0) { rangeSlashes.splice(i, 1); continue; }
+        rCtx.save(); rCtx.strokeStyle = sl.col; rCtx.globalAlpha = sl.life;
+        if (sl.type === 'katana') {
+          rCtx.lineWidth = 3.5; rCtx.beginPath(); rCtx.moveTo(sl.x - 40, sl.y + 26); rCtx.lineTo(sl.x + 40, sl.y - 26); rCtx.stroke();
+        } else if (sl.type === 'chain') {
+          rCtx.lineWidth = 2; rCtx.beginPath(); rCtx.moveTo(sl.x, sl.y); rCtx.lineTo((sl.x + sl.x2) / 2, (sl.y + sl.y2) / 2 - 14); rCtx.lineTo(sl.x2, sl.y2); rCtx.stroke();
+        } else if (sl.type === 'explosion') {
+          rCtx.lineWidth = 3; rCtx.beginPath(); rCtx.arc(sl.x, sl.y, (1.0 - sl.life) * 85 + 10, 0, Math.PI * 2); rCtx.stroke();
+        } else {
+          rCtx.lineWidth = 2; rCtx.beginPath(); rCtx.arc(sl.x, sl.y, (1.0 - sl.life) * 28 + 6, 0, Math.PI * 2); rCtx.stroke();
+        }
+        rCtx.restore();
+      }
+
+      for (let i = rangeSparks.length - 1; i >= 0; i--) {
+        const sp = rangeSparks[i]; sp.x += sp.vx * speedMult; sp.y += sp.vy * speedMult; sp.life -= 0.06;
+        if (sp.life <= 0) { rangeSparks.splice(i, 1); continue; }
+        rCtx.fillStyle = sp.col; rCtx.fillRect(sp.x, sp.y, 3, 3);
+      }
+
+      for (let i = rangeTexts.length - 1; i >= 0; i--) {
+        const ft = rangeTexts[i]; ft.y -= 1.0; ft.life -= 0.035;
+        if (ft.life <= 0) { rangeTexts.splice(i, 1); continue; }
+        rCtx.font = '600 12px "JetBrains Mono", monospace'; rCtx.fillStyle = ft.col; rCtx.fillText(ft.txt, ft.x - 16, ft.y);
+      }
+
+      chSpread = Math.max(0, chSpread - 0.8);
+      const gap = (adsZoom ? 2 : 5) + (chStyle === 0 ? chSpread : 0);
+      rCtx.fillStyle = chColor;
+      rCtx.fillRect(mouseX - 1.5, mouseY - 1.5, 3, 3);
+      if (chStyle === 0) {
+        rCtx.fillRect(mouseX - 1, mouseY - gap - 7, 2, 7);
+        rCtx.fillRect(mouseX - 1, mouseY + gap, 2, 7);
+        rCtx.fillRect(mouseX - gap - 7, mouseY - 1, 7, 2);
+        rCtx.fillRect(mouseX + gap, mouseY - 1, 7, 2);
+      }
+      requestAnimationFrame(updateFiringRange);
+    }
+    updateFiringRange();
+
+    // Радар
+    const canvas = document.getElementById('radar-canvas');
+    const ctx = canvas.getContext('2d');
+    const rBlips = [
+      { a: 0.5, r: 48, s: 0.014, c: '#ff453a', sz: 6 },
+      { a: 2.1, r: 72, s: -0.011, c: '#ff9f0a', sz: 6 },
+      { a: 3.7, r: 36, s: 0.019, c: '#ff453a', sz: 6 },
+      { a: 4.8, r: 85, s: 0.007, c: '#ff375f', sz: 9 },
+      { a: 1.3, r: 62, s: 0.0, c: '#30d158', sz: 6 }
+    ];
+    let ping = 0;
+    canvas.addEventListener('click', () => { ping = 4; playGameSfx('ui'); });
+
+    function renderRadar() {
+      const w = canvas.width, h = canvas.height, cx = w / 2, cy = h / 2;
+      ctx.clearRect(0, 0, w, h);
+      ctx.strokeStyle = 'rgba(255,255,255,0.08)'; ctx.lineWidth = 1;
+      [32, 64, 94].forEach(radius => { ctx.beginPath(); ctx.arc(cx, cy, radius, 0, Math.PI * 2); ctx.stroke(); });
+      ctx.beginPath(); ctx.moveTo(cx, 0); ctx.lineTo(cx, h); ctx.moveTo(0, cy); ctx.lineTo(w, cy); ctx.stroke();
+      ctx.fillStyle = 'rgba(90,200,250,0.09)';
+      ctx.beginPath(); ctx.moveTo(cx, cy); ctx.arc(cx, cy, 100, -Math.PI * 0.72, -Math.PI * 0.28); ctx.closePath(); ctx.fill();
+      if (ping > 0) {
+        ctx.strokeStyle = 'rgba(90,200,250,0.65)'; ctx.lineWidth = 1.5;
+        ctx.beginPath(); ctx.arc(cx, cy, ping, 0, Math.PI * 2); ctx.stroke();
+        ping += 3.5; if (ping > 102) ping = 0;
+      }
+      rBlips.forEach(t => {
+        t.a += t.s * (rangeSlowMo ? 0.3 : 1.0);
+        ctx.fillStyle = t.c; ctx.beginPath();
+        ctx.arc(cx + Math.cos(t.a) * t.r, cy + Math.sin(t.a) * t.r, t.sz / 2, 0, Math.PI * 2); ctx.fill();
+      });
+      ctx.fillStyle = '#ffffff'; ctx.beginPath(); ctx.arc(cx, cy, 4, 0, Math.PI * 2); ctx.fill();
+      requestAnimationFrame(renderRadar);
+    }
+    renderRadar();
+  </script>
+</body>
+</html>
