@@ -23,7 +23,7 @@
 
     <nav>
         <button class="nav-btn active" id="btn-sw">SOFTWARE</button>
-        <button class="nav-btn" id="btn-order">ORDER_DEV</button>
+        <button class="nav-btn" id="btn-games">GAMES</button>
     </nav>
 
     <!-- Секция ПО -->
@@ -62,16 +62,22 @@
         </div>
     </div>
 
-    <!-- Секция Заказа -->
-    <div id="order" class="section">
-        <div class="form-container">
-            <div class="payment-info">
-                💳 Оплата принимается в <b>РУБЛЯХ</b> (СБП / Карта)
+    <!-- Секция Игр -->
+    <div id="games" class="section">
+        <div class="grid">
+            <div class="card">
+                <div>
+                    <div class="card-header">
+                        <h3>SECTOR-ZERO</h3>
+                        <span class="badge">RELEASE</span>
+                    </div>
+                    <p>Скоростной тактический шутер от первого лица. 7 видов вооружения (слоты 1–7), 4 класса оперативников (Ronin, Vanguard, Juggernaut, Phantom), Darksynth OST и 2 режима боя: Bunker Breach и Arena Overdrive.</p>
+                </div>
+                <div class="card-actions">
+                    <a href="sector-zero.html" class="btn-action">OPEN_PAGE</a>
+                    <a href="https://www.mediafire.com/file/zvx8f3h1fdh14xy/SECTOR-Zero.exe/file" target="_blank" rel="noopener" class="btn-action btn-primary-action">GET_BINARY (.EXE)</a>
+                </div>
             </div>
-            <textarea id="task-input" rows="5" placeholder="Опишите задачу для разработки..."></textarea>
-            <input type="text" id="contact-input" placeholder="Ваш ник в TG или Discord">
-            <button class="btn-action" id="submit-btn" style="width: 100%; cursor: pointer;">SUBMIT_ORDER</button>
-            <p class="footer-note">Powered by FortDen Infrastructure</p>
         </div>
     </div>
 
